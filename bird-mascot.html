@@ -1,0 +1,31 @@
+<!-- Bird Mascot - Fixed overlay, does not affect layout -->
+<div class="bird-mascot" id="birdMascot"
+    style="position: fixed !important; z-index: 999999 !important; pointer-events: none !important;">
+    <button class="bird-skip-btn" onclick="skipBirdTour()" id="birdSkipBtn">Skip</button>
+    <div class="bird-speech-bubble" id="birdSpeechBubble">
+        <div class="bird-message" id="birdMessage"></div>
+        <button class="bird-next-btn" onclick="nextBirdStep()" id="birdNextBtn" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            Next
+        </button>
+    </div>
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bird body -->
+        <ellipse cx="50" cy="60" rx="25" ry="20" fill="#FFB84D" stroke="#FF9500" stroke-width="2" />
+        <!-- Bird head -->
+        <circle cx="50" cy="45" r="18" fill="#FFD700" stroke="#FFA500" stroke-width="2" />
+        <!-- Bird eye -->
+        <circle cx="45" cy="42" r="4" fill="#333" />
+        <circle cx="46" cy="41" r="1.5" fill="white" />
+        <!-- Bird beak -->
+        <path d="M 35 45 L 25 42 L 35 47 Z" fill="#FF6B00" />
+        <!-- Bird wing -->
+        <ellipse cx="45" cy="58" rx="12" ry="15" fill="#FFA500" opacity="0.8" />
+        <!-- Bird tail -->
+        <path d="M 25 60 Q 15 55 10 65 Q 15 60 25 65 Z" fill="#FF9500" />
+    </svg>
+</div>
+
