@@ -1647,31 +1647,32 @@ function initializeTranslations() {
         introEl.innerHTML = t('explanationIntroText').replace('{monthlyPayout}', '<span class="explanation-dynamic">Rs. 0</span>');
     }
     
-    // Explanation section
-    const explanationMap = {
-        'explanationToggleText': 'explanationToggle',
-        'explanationTitle1': 'explanationTitle1',
-        'explanationText1': 'explanationText1',
-        'explanationText2': 'explanationText2',
-        'explanationTitle2': 'explanationTitle2',
-        'explanationText3': 'explanationText3',
-        'explanationTitle3': 'explanationTitle3',
-        'explanationText4': 'explanationText4',
-        'explanationTitle4': 'explanationTitle4',
-        'explanationText6': 'explanationText6',
-        'explanationText7': 'explanationText7',
-        'explanationTitle5': 'explanationTitle5',
-        'explanationText8': 'explanationText8',
-        'explanationTitle6': 'explanationTitle6',
-        'explanationText9': 'explanationText9',
-        'explanationText10': 'explanationText10'
-    };
-    
-    for (const [id, key] of Object.entries(explanationMap)) {
-        const el = document.getElementById(id);
-        if (el) el.innerText = t(key);
+    // Initialize explanation lists with placeholders (will be updated with real values in calculate())
+    const list1 = document.getElementById('explanationList1');
+    if (list1) {
+        list1.innerHTML = t('explanationList1')
+            .replace('{currentAge}', '30')
+            .replace('{retireAge}', '60')
+            .replace('{deathAge}', '68')
+            .replace('{payoutYears}', '8')
+            .replace('{stepUpPercent}', '10.0');
     }
-    
+    const list2 = document.getElementById('explanationList2');
+    if (list2) {
+        list2.innerHTML = t('explanationList2')
+            .replace('{years}', '30')
+            .replace('{stepUpPercent}', '10.0')
+            .replace('{totalContributions}', '<span class="explanation-dynamic">Rs. 0</span>');
+    }
+    const list3 = document.getElementById('explanationList3');
+    if (list3) {
+        list3.innerHTML = t('explanationList3')
+            .replace('{retireAge}', '60')
+            .replace('{finalPot}', '<span class="explanation-dynamic">Rs. 0</span>')
+            .replace('{totalGrowth}', '<span class="explanation-dynamic">Rs. 0</span>')
+            .replace('{monthlyPayout}', '<span class="explanation-dynamic">Rs. 0</span>')
+            .replace('{payoutYears}', '8');
+    }
 }
 
 // Initialize fields on load
