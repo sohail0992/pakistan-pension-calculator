@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto-Invest Guide | Al Meezan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title id="pageTitle">Auto-Invest Guide | Al Meezan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
+        :root { --meezan-green: #006837; }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -13,6 +17,23 @@
             margin: 0;
             padding: 20px;
         }
+        
+        body.lang-en { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; direction: ltr; }
+        body.lang-ur, body.lang-hnd { 
+            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
+            font-display: swap;
+            direction: rtl;
+        }
+        body.lang-ps { 
+            font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
+            font-display: swap;
+            direction: rtl;
+        }
+        
+        body[dir="rtl"] { text-align: right; }
+        body[dir="rtl"] .step-box { border-left: none; border-right: 4px solid #006837; border-radius: 8px 0 0 8px; }
+        body[dir="rtl"] .step-number { margin-right: 0; margin-left: 5px; }
+        
         .container {
             max-width: 600px;
             margin: auto;
@@ -60,53 +81,327 @@
             font-weight: bold;
         }
         .btn:hover { background: #004d29; }
+        
+        /* Language switcher */
+        .language-switcher { position: fixed; right: 20px; bottom: 20px; z-index: 1000; }
+        .language-icon-btn { width: 56px; height: 56px; background: white; border: 2px solid #ddd; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: all 0.3s; }
+        .language-icon-btn:hover { border-color: var(--meezan-green); box-shadow: 0 6px 16px rgba(0,0,0,0.2); transform: scale(1.1); }
+        .language-icon-btn svg { width: 28px; height: 28px; fill: var(--meezan-green); }
+        .language-dropdown { position: absolute; bottom: 70px; right: 0; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 160px; display: none; overflow: hidden; }
+        .language-dropdown.show { display: block; }
+        .language-option { display: block; padding: 12px 20px; background: white; border: none; cursor: pointer; transition: all 0.2s; text-align: left; font-size: 0.9rem; color: #333; border-bottom: 1px solid #f0f0f0; }
+        .language-option:hover { background: #f5f5f5; }
+        .language-option.active { background: var(--meezan-green); color: white; font-weight: 600; }
+        .language-option:last-child { border-bottom: none; }
+        
+        body[dir="rtl"] .language-switcher { right: auto; left: 20px; }
+        body[dir="rtl"] .language-dropdown { right: auto; left: 0; }
+        body[dir="rtl"] .language-option { text-align: right; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 20px; }
+            h2 { font-size: 16px; }
+            .language-switcher { right: 10px; bottom: 10px; }
+            .language-icon-btn { width: 50px; height: 50px; }
+        }
     </style>
 </head>
 <body>
 
+<div class="language-switcher">
+    <div class="language-icon-btn" onclick="toggleLanguageDropdown()" id="languageIconBtn" title="Change Language">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+        </svg>
+    </div>
+    <div class="language-dropdown" id="languageDropdown">
+        <div class="language-option active" onclick="switchLanguage('en')" data-lang="en">English</div>
+        <div class="language-option" onclick="switchLanguage('ur')" data-lang="ur">اردو</div>
+        <div class="language-option" onclick="switchLanguage('ps')" data-lang="ps">پښتو</div>
+        <div class="language-option" onclick="switchLanguage('hnd')" data-lang="hnd">ہندکو</div>
+    </div>
+</div>
+
 <div class="container">
     <div class="header">
-        <h1>Al Meezan Investments</h1>
-        <p>How to Set Up Monthly Auto-Invest (SIP)</p>
+        <h1 id="headerTitle">Al Meezan Investments</h1>
+        <p id="headerSubtitle">How to Set Up Monthly Auto-Invest (SIP)</p>
     </div>
 
-    <h2>Option 1: Using the Al Meezan App</h2>
+    <h2 id="option1Title">Option 1: Using the Al Meezan App</h2>
     <div class="step-box">
-        <span class="step-number">Step 1:</span> Login to your Al Meezan Funds App.
+        <span class="step-number" id="step1Label">Step 1:</span> <span id="step1Text">Login to your Al Meezan Funds App.</span>
     </div>
     <div class="step-box">
-        <span class="step-number">Step 2:</span> Tap on <b>"Invest"</b> from the dashboard.
+        <span class="step-number" id="step2Label">Step 2:</span> <span id="step2Text">Tap on <b>"Invest"</b> from the dashboard.</span>
     </div>
     <div class="step-box">
-        <span class="step-number">Step 3:</span> Select <b>"Systematic Investment Plan (SIP)"</b>.
+        <span class="step-number" id="step3Label">Step 3:</span> <span id="step3Text">Select <b>"Systematic Investment Plan (SIP)"</b>.</span>
     </div>
     <div class="step-box">
-        <span class="step-number">Step 4:</span> Choose your fund, enter the monthly amount, and set the start date.
+        <span class="step-number" id="step4Label">Step 4:</span> <span id="step4Text">Choose your fund, enter the monthly amount, and set the start date.</span>
     </div>
 
     <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
 
-    <h2>Option 2: Using Meezan Bank App</h2>
+    <h2 id="option2Title">Option 2: Using Meezan Bank App</h2>
     <div class="step-box">
-        <span class="step-number">1.</span> Open <b>Meezan Bank App</b> &gt; <b>Bill Payment</b>.
+        <span class="step-number" id="step5Label">1.</span> <span id="step5Text">Open <b>Meezan Bank App</b> &gt; <b>Bill Payment</b>.</span>
     </div>
     <div class="step-box">
-        <span class="step-number">2.</span> Select <b>Al Meezan Investments</b>.
+        <span class="step-number" id="step6Label">2.</span> <span id="step6Text">Select <b>Al Meezan Investments</b>.</span>
     </div>
     <div class="step-box">
-        <span class="step-number">3.</span> Toggle the <b>"Standing Instruction"</b> or <b>"Schedule"</b> switch.
+        <span class="step-number" id="step7Label">3.</span> <span id="step7Text">Toggle the <b>"Standing Instruction"</b> or <b>"Schedule"</b> switch.</span>
     </div>
     <div class="step-box">
-        <span class="step-number">4.</span> Set frequency to <b>Monthly</b> and confirm.
+        <span class="step-number" id="step8Label">4.</span> <span id="step8Text">Set frequency to <b>Monthly</b> and confirm.</span>
     </div>
 
-    <a href="https://www.almeezangroup.com/" class="btn">Visit Official Website</a>
+    <a href="https://www.almeezangroup.com/" class="btn" id="visitOfficialWebsite">Visit Official Website</a>
 
-    <div class="footer">
+    <div class="footer" id="footerNote">
         Note: For GOKP employees, mandatory contributions are automated via payroll. These steps are for additional voluntary investments.
     </div>
 </div>
 
+<script>
+// Translations
+const translations = {
+  "en": {
+    "pageTitle": "Auto-Invest Guide | Al Meezan",
+    "headerTitle": "Al Meezan Investments",
+    "headerSubtitle": "How to Set Up Monthly Auto-Invest (SIP)",
+    "option1Title": "Option 1: Using the Al Meezan App",
+    "step1Label": "Step 1:",
+    "step1Text": "Login to your Al Meezan Funds App.",
+    "step2Label": "Step 2:",
+    "step2Text": "Tap on \"Invest\" from the dashboard.",
+    "step3Label": "Step 3:",
+    "step3Text": "Select \"Systematic Investment Plan (SIP)\".",
+    "step4Label": "Step 4:",
+    "step4Text": "Choose your fund, enter the monthly amount, and set the start date.",
+    "option2Title": "Option 2: Using Meezan Bank App",
+    "step5Label": "1.",
+    "step5Text": "Open Meezan Bank App > Bill Payment.",
+    "step6Label": "2.",
+    "step6Text": "Select Al Meezan Investments.",
+    "step7Label": "3.",
+    "step7Text": "Toggle the \"Standing Instruction\" or \"Schedule\" switch.",
+    "step8Label": "4.",
+    "step8Text": "Set frequency to Monthly and confirm.",
+    "visitOfficialWebsite": "Visit Official Website",
+    "footerNote": "Note: For GOKP employees, mandatory contributions are automated via payroll. These steps are for additional voluntary investments."
+  },
+  "ur": {
+    "pageTitle": "خودکار سرمایہ کاری گائیڈ | المیزان",
+    "headerTitle": "المیزان انویسٹمنٹس",
+    "headerSubtitle": "ماہانہ خودکار سرمایہ کاری (SIP) کیسے سیٹ اپ کریں",
+    "option1Title": "آپشن 1: المیزان ایپ استعمال کرتے ہوئے",
+    "step1Label": "مرحلہ 1:",
+    "step1Text": "اپنے المیزان فنڈز ایپ میں لاگ ان کریں۔",
+    "step2Label": "مرحلہ 2:",
+    "step2Text": "ڈیش بورڈ سے \"سرمایہ کاری\" پر ٹیپ کریں۔",
+    "step3Label": "مرحلہ 3:",
+    "step3Text": "\"منظم سرمایہ کاری پلان (SIP)\" منتخب کریں۔",
+    "step4Label": "مرحلہ 4:",
+    "step4Text": "اپنا فنڈ منتخب کریں، ماہانہ رقم درج کریں، اور شروع کی تاریخ سیٹ کریں۔",
+    "option2Title": "آپشن 2: میزان بینک ایپ استعمال کرتے ہوئے",
+    "step5Label": "1.",
+    "step5Text": "میزان بینک ایپ کھولیں > بل کی ادائیگی۔",
+    "step6Label": "2.",
+    "step6Text": "المیزان انویسٹمنٹس منتخب کریں۔",
+    "step7Label": "3.",
+    "step7Text": "\"مستقل ہدایت\" یا \"شیڈول\" سوئچ کو ٹاگل کریں۔",
+    "step8Label": "4.",
+    "step8Text": "تعدد کو ماہانہ پر سیٹ کریں اور تصدیق کریں۔",
+    "visitOfficialWebsite": "سرکاری ویب سائٹ ملاحظہ کریں",
+    "footerNote": "نوٹ: GOKP ملازمین کے لیے، لازمی شراکتیں پی رول کے ذریعے خودکار ہیں۔ یہ مراحل اضافی رضاکارانہ سرمایہ کاری کے لیے ہیں۔"
+  },
+  "ps": {
+    "pageTitle": "د خپلکار پانګه اچونې لارښود | المیزان",
+    "headerTitle": "المیزان پانګه اچونې",
+    "headerSubtitle": "د میاشتنی خپلکار پانګه اچونه (SIP) څنګه تنظیم کړئ",
+    "option1Title": "غوره 1: د المیزان اپلیکیشن کارولو سره",
+    "step1Label": "ګام 1:",
+    "step1Text": "ستاسو د المیزان فنډونو اپلیکیشن ته ننوځئ.",
+    "step2Label": "ګام 2:",
+    "step2Text": "د ډیشبورډ څخه \"پانګه اچونه\" باندې ټیپ وکړئ.",
+    "step3Label": "ګام 3:",
+    "step3Text": "\"د منظم پانګه اچونې پلان (SIP)\" وټاکئ.",
+    "step4Label": "ګام 4:",
+    "step4Text": "خپل فنډ وټاکئ، میاشتنی اندازه ولیکئ، او د پیل نیټه تنظیم کړئ.",
+    "option2Title": "غوره 2: د میزان بانک اپلیکیشن کارولو سره",
+    "step5Label": "1.",
+    "step5Text": "میزان بانک اپلیکیشن خلاص کړئ > د بل تادیات.",
+    "step6Label": "2.",
+    "step6Text": "المیزان پانګه اچونې وټاکئ.",
+    "step7Label": "3.",
+    "step7Text": "\"د دوامداره لارښود\" یا \"مهالویش\" سوئچ بدل کړئ.",
+    "step8Label": "4.",
+    "step8Text": "د تعدد میاشتنی تنظیم کړئ او تصدیق وکړئ.",
+    "visitOfficialWebsite": "رسمي ویب پاڼه وګورئ",
+    "footerNote": "یادونه: د GOKP کارکوونکو لپاره، اجباري ونډې د پی رول له لارې خپلکار دي. دا ګامونه د اضافي رضاکارانه پانګه اچونو لپاره دي."
+  },
+  "hnd": {
+    "pageTitle": "خودکار سرمایہ کاری گائیڈ | المیزان",
+    "headerTitle": "المیزان انویسٹمنٹس",
+    "headerSubtitle": "ماہانہ خودکار سرمایہ کاری (SIP) کیویں سیٹ اپ کرو",
+    "option1Title": "آپشن 1: المیزان ایپ استعمال کریندے ہوئے",
+    "step1Label": "مرحلہ 1:",
+    "step1Text": "اپنی المیزان فنڈز ایپ وچ لاگ ان کرو۔",
+    "step2Label": "مرحلہ 2:",
+    "step2Text": "ڈیش بورڈ توں \"سرمایہ کاری\" تے ٹیپ کرو۔",
+    "step3Label": "مرحلہ 3:",
+    "step3Text": "\"منظم سرمایہ کاری پلان (SIP)\" منتخب کرو۔",
+    "step4Label": "مرحلہ 4:",
+    "step4Text": "اپنا فنڈ منتخب کرو، ماہانہ رقم درج کرو، تے شروع دی تاریخ سیٹ کرو۔",
+    "option2Title": "آپشن 2: میزان بینک ایپ استعمال کریندے ہوئے",
+    "step5Label": "1.",
+    "step5Text": "میزان بینک ایپ کھولو > بل دی ادائیگی۔",
+    "step6Label": "2.",
+    "step6Text": "المیزان انویسٹمنٹس منتخب کرو۔",
+    "step7Label": "3.",
+    "step7Text": "\"مستقل ہدایت\" یا \"شیڈول\" سوئچ نوں ٹاگل کرو۔",
+    "step8Label": "4.",
+    "step8Text": "تعدد نوں ماہانہ تے سیٹ کرو تے تصدیق کرو۔",
+    "visitOfficialWebsite": "سرکاری ویب سائٹ ڈیکھو",
+    "footerNote": "نوٹ: GOKP ملازمین دے لئی، لازمی شراکتاں پی رول دے ذریعے خودکار نیں۔ ایہ مراحل اضافی رضاکارانہ سرمایہ کاری دے لئی نیں۔"
+  }
+};
+
+// Load saved language from localStorage
+let currentLanguage = localStorage.getItem('pensionPlannerLanguage') || 'en';
+const validLanguages = ['en', 'ur', 'ps', 'hnd'];
+if (!validLanguages.includes(currentLanguage)) {
+    currentLanguage = 'en';
+}
+
+// Translation helper
+function t(key) {
+    if (translations[currentLanguage] && translations[currentLanguage][key]) {
+        return translations[currentLanguage][key];
+    }
+    return translations['en'][key] || key;
+}
+
+// Load fonts dynamically
+function loadFontsForLanguage(lang) {
+    if (lang === 'en') return;
+    
+    if (lang === 'ur' || lang === 'hnd') {
+        if (!document.querySelector('link[href*="Noto+Nastaliq+Urdu"]')) {
+            const link = document.createElement('link');
+            link.href = 'https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        }
+    }
+    
+    if (lang === 'ps') {
+        if (!document.querySelector('link[href*="Noto+Naskh+Arabic"]')) {
+            const link = document.createElement('link');
+            link.href = 'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        }
+    }
+}
+
+// Toggle language dropdown
+function toggleLanguageDropdown() {
+    const dropdown = document.getElementById('languageDropdown');
+    dropdown.classList.toggle('show');
+}
+
+// Switch language
+function switchLanguage(lang) {
+    if (!translations[lang]) return;
+    
+    currentLanguage = lang;
+    localStorage.setItem('pensionPlannerLanguage', lang);
+    
+    loadFontsForLanguage(lang);
+    
+    document.body.classList.remove('lang-en', 'lang-ur', 'lang-ps', 'lang-hnd');
+    document.body.classList.add('lang-' + lang);
+    
+    const langCode = lang === 'ur' ? 'ur' : lang === 'ps' ? 'ps' : lang === 'hnd' ? 'ur' : 'en';
+    document.documentElement.lang = langCode;
+    
+    const isRTL = lang === 'ur' || lang === 'ps' || lang === 'hnd';
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.body.dir = isRTL ? 'rtl' : 'ltr';
+    
+    document.querySelectorAll('.language-option').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        }
+    });
+    
+    document.getElementById('languageDropdown').classList.remove('show');
+    
+    initializeTranslations();
+}
+
+// Initialize translations
+function initializeTranslations() {
+    document.getElementById('pageTitle').innerText = t('pageTitle');
+    document.getElementById('headerTitle').innerText = t('headerTitle');
+    document.getElementById('headerSubtitle').innerText = t('headerSubtitle');
+    document.getElementById('option1Title').innerText = t('option1Title');
+    document.getElementById('step1Label').innerText = t('step1Label');
+    document.getElementById('step1Text').innerHTML = t('step1Text');
+    document.getElementById('step2Label').innerText = t('step2Label');
+    document.getElementById('step2Text').innerHTML = t('step2Text');
+    document.getElementById('step3Label').innerText = t('step3Label');
+    document.getElementById('step3Text').innerHTML = t('step3Text');
+    document.getElementById('step4Label').innerText = t('step4Label');
+    document.getElementById('step4Text').innerHTML = t('step4Text');
+    document.getElementById('option2Title').innerText = t('option2Title');
+    document.getElementById('step5Label').innerText = t('step5Label');
+    document.getElementById('step5Text').innerHTML = t('step5Text');
+    document.getElementById('step6Label').innerText = t('step6Label');
+    document.getElementById('step6Text').innerHTML = t('step6Text');
+    document.getElementById('step7Label').innerText = t('step7Label');
+    document.getElementById('step7Text').innerHTML = t('step7Text');
+    document.getElementById('step8Label').innerText = t('step8Label');
+    document.getElementById('step8Text').innerHTML = t('step8Text');
+    document.getElementById('visitOfficialWebsite').innerText = t('visitOfficialWebsite');
+    document.getElementById('footerNote').innerText = t('footerNote');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const switcher = document.querySelector('.language-switcher');
+    const dropdown = document.getElementById('languageDropdown');
+    if (switcher && dropdown && !switcher.contains(event.target)) {
+        dropdown.classList.remove('show');
+    }
+});
+
+// Initialize on load
+document.body.classList.add('lang-' + currentLanguage);
+const isRTLInitial = currentLanguage === 'ur' || currentLanguage === 'ps' || currentLanguage === 'hnd';
+document.documentElement.dir = isRTLInitial ? 'rtl' : 'ltr';
+document.body.dir = isRTLInitial ? 'rtl' : 'ltr';
+
+const langCode = currentLanguage === 'ur' ? 'ur' : currentLanguage === 'ps' ? 'ps' : currentLanguage === 'hnd' ? 'ur' : 'en';
+document.documentElement.lang = langCode;
+
+loadFontsForLanguage(currentLanguage);
+
+document.querySelectorAll('.language-option').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-lang') === currentLanguage) {
+        btn.classList.add('active');
+    }
+});
+
+initializeTranslations();
+</script>
+
 </body>
 </html>
-
