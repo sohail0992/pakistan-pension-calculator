@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pension Planner | Pakistan</title>
+    <!-- Fonts for different languages - Load only when needed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        :root { --meezan-green: #007565; --bg: #f0f4f3; --text: #333; }
+        
+        /* Language-specific fonts with font-display: swap for faster loading */
+        body { background: var(--bg); display: flex; justify-content: center; padding: 10px; color: var(--text); margin: 0; overflow-x: hidden; }
+        body.lang-en { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; direction: ltr; }
+        body.lang-ur, body.lang-hnd { 
+            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
+            font-display: swap;
+            direction: rtl;
+        }
+        body.lang-ps { 
+            font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
+            font-display: swap;
+            direction: rtl;
+        }
+        
+        /* Ensure proper font rendering for Urdu/Hindko (Nastaliq) */
+        body.lang-ur *, body.lang-hnd * { 
+            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
+            font-display: swap;
+        }
+        
+        /* Ensure proper font rendering for Pashto (Naskh) */
+        body.lang-ps * { 
+            font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
+            font-display: swap;
+        }
+        
+        /* Keep icons, buttons, and input numbers with system fonts */
+        body.lang-ur button, body.lang-hnd button, body.lang-ps button,
+        body.lang-ur svg, body.lang-hnd svg, body.lang-ps svg,
+        body.lang-ur input[type="number"], body.lang-hnd input[type="number"], body.lang-ps input[type="number"],
+        body.lang-ur .language-icon-btn, body.lang-hnd .language-icon-btn, body.lang-ps .language-icon-btn,
+        body.lang-ur .slider-value, body.lang-hnd .slider-value, body.lang-ps .slider-value {
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .card { background: white; padding: 1.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 1200px; }
+        .main-container { display: grid; grid-template-columns: 2.5fr auto 1fr; gap: 20px; position: relative; align-items: start; }
+        .input-section { display: flex; flex-direction: column; }
+        .results-section { display: flex; flex-direction: column; align-self: start; margin-top: 20px; }
+        .column-divider { width: 2px; background: #eee; margin: 0 10px; }
+        
+        /* RTL Support for Urdu, Pashto, and Hindko */
+        body[dir="rtl"] .main-container { 
+            direction: rtl; 
+            grid-template-columns: 1fr auto 2.5fr; /* Flip columns: results first, then divider, then inputs */
+        }
+        body[dir="rtl"] .input-section { 
+            text-align: right; 
+            order: 3;
+        }
+        body[dir="rtl"] .results-section { 
+            text-align: right; 
+            order: 1;
+        }
+        body[dir="rtl"] .column-divider { 
+            order: 2;
+        }
+        body[dir="rtl"] .stat-box { text-align: right; }
+        body[dir="rtl"] .stat-row { 
+            flex-direction: row-reverse; 
+            justify-content: space-between;
+        }
+        body[dir="rtl"] .input-row { 
+            direction: rtl; 
+            text-align: right;
+        }
+        body[dir="rtl"] label { text-align: right; }
+        body[dir="rtl"] .footer { text-align: center; }
+        body[dir="rtl"] .shareable-card { transform: rotate(1deg); }
+        body[dir="rtl"] .stat-label { text-align: right; }
+        body[dir="rtl"] .stat-value { text-align: right; }
+        body[dir="rtl"] .stat-title { text-align: right; }
+        body[dir="rtl"] .stat-number { text-align: left; }
+        body[dir="rtl"] h1 { text-align: center; }
+        body[dir="rtl"] .tooltip { left: auto; right: 50%; transform: translateX(50%); }
+        body[dir="rtl"] .tooltip::after { left: auto; right: 50%; transform: translateX(50%); }
+        body[dir="rtl"] input { text-align: right; direction: rtl; }
+        body[dir="rtl"] input[type="number"] { direction: ltr; text-align: right; }
+        body[dir="rtl"] .slider-container { direction: rtl; }
+        body[dir="rtl"] .share-buttons { direction: ltr; }
+        .shareable-card { background: #fff9c4; border: 2px solid #fdd835; border-radius: 2px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1); transform: rotate(-1deg); position: relative; }
+        .shareable-card::before { content: ''; position: absolute; top: -2px; right: 30px; width: 20px; height: 20px; background: #fff9c4; border: 2px solid #fdd835; border-bottom: none; border-right: none; transform: rotate(45deg); }
+        .shareable-card .stat-box { padding: 6px; margin-bottom: 5px; background: rgba(255,255,255,0.5); border-left: 3px solid #fdd835; }
+        .shareable-card .stat-title { font-size: 0.65rem; }
+        .shareable-card .stat-value { font-size: 0.9rem; }
+        .shareable-card .stat-label { font-size: 0.7rem; }
+        .shareable-card .stat-number { font-size: 0.75rem; }
+        .share-buttons { display: flex; gap: 12px; margin-top: 15px; justify-content: center; }
+        .share-btn { width: 45px; height: 45px; border: none; border-radius: 50%; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .share-btn:hover { transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .share-btn svg { width: 24px; height: 24px; }
+        .share-btn-whatsapp { background: #25D366; }
+        .share-btn-email { background: #007565; }
+        .share-btn-twitter { background: #1DA1F2; }
+        @media (max-width: 968px) {
+            .main-container { grid-template-columns: 1fr; }
+            .column-divider { display: none; }
+        }
+        h1 { color: var(--meezan-green); text-align: center; margin-bottom: 1rem; font-size: 1.4rem; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+        .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .mode-btn { flex: 1; padding: 12px; border: 2px solid var(--meezan-green); background: white; color: var(--meezan-green); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .mode-btn.active { background: var(--meezan-green); color: white; }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .input-full { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: #666; }
+        .label-hint { font-size: 0.75rem; color: #999; font-weight: normal; margin-left: 5px; }
+        .help-icon { display: inline-block; width: 16px; height: 16px; background: var(--meezan-green); color: white; border-radius: 50%; text-align: center; line-height: 16px; font-size: 11px; font-weight: bold; cursor: help; margin-left: 5px; vertical-align: middle; }
+        .tooltip-container { position: relative; display: inline-block; z-index: 1000; }
+        .tooltip { visibility: hidden; position: absolute; background: #333; color: white; padding: 12px; border-radius: 8px; font-size: 0.8rem; width: 280px; z-index: 10000; bottom: 125%; left: 50%; transform: translateX(-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); white-space: normal; }
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #333; }
+        .tooltip-container:hover .tooltip { visibility: visible; }
+        .tooltip:hover { visibility: visible; }
+        .input-section, .results-section { overflow: visible; }
+        .main-container { overflow: visible; }
+        .tooltip-title { font-weight: bold; margin-bottom: 8px; color: #fff; }
+        .tooltip-example { margin-top: 8px; line-height: 1.6; }
+        .tooltip-year { display: flex; justify-content: space-between; padding: 2px 0; }
+        .tooltip-year-label { color: #ccc; }
+        .tooltip-year-value { font-weight: bold; }
+        .tooltip-toggle { display: flex; gap: 5px; margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 8px; }
+        .tooltip-toggle-btn { flex: 1; padding: 5px 8px; background: #555; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; text-align: center; transition: background 0.2s; }
+        .tooltip-toggle-btn:hover { background: #666; }
+        .tooltip-toggle-btn.active { background: var(--meezan-green); }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
+        input:disabled { background: #f5f5f5; color: #999; }
+        input[type="range"] { width: 100%; height: 8px; border-radius: 5px; background: #ddd; outline: none; -webkit-appearance: none; appearance: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--meezan-green); cursor: pointer; }
+        input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--meezan-green); cursor: pointer; border: none; appearance: none; }
+        .slider-container { display: flex; gap: 10px; align-items: center; }
+        .slider-container input[type="range"] { flex: 1; }
+        .slider-value { min-width: 60px; text-align: center; font-weight: bold; color: var(--meezan-green); font-size: 1rem; }
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding: 12px; background: #f9f9f9; border-radius: 8px; }
+        .checkbox-container input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+        .checkbox-container label { margin: 0; font-size: 0.9rem; cursor: pointer; }
+        button { width: 100%; padding: 15px; background: var(--meezan-green); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1.1rem; transition: background 0.3s; }
+        button:hover { background: #005a4d; }
+        .results { display: flex; flex-direction: column; gap: 10px; }
+        .results.hidden { display: none; }
+        .results-section .shareable-card { margin-top: 0; padding-top: 15px; }
+        .stat-box { background: #e6f4f1; padding: 15px; border-radius: 10px; border-left: 5px solid var(--meezan-green); }
+        @media (max-width: 768px) {
+            .results-grid { grid-template-columns: 1fr; }
+        }
+        .stat-title { font-size: 0.8rem; color: #555; display: block; margin-bottom: 5px; }
+        .stat-value { font-size: 1.3rem; font-weight: bold; color: var(--meezan-green); display: block; }
+        .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .stat-row:last-child { margin-bottom: 0; }
+        .stat-label { font-size: 0.85rem; color: #666; }
+        .stat-number { font-size: 1rem; font-weight: 600; color: var(--meezan-green); }
+        .inflation-warning { color: #d35400; font-size: 0.75rem; padding: 8px 12px; background: #fff3e0; border-radius: 6px; margin-top: 10px; line-height: 1.4; border-left: 3px solid #d35400; }
+        .footer { font-size: 0.7rem; text-align: center; color: #999; margin-top: 20px; padding-top: 15px; line-height: 1.8; }
+        .footer a { color: #999; text-decoration: none; border-bottom: 1px dotted #999; transition: color 0.2s; }
+        .footer a:hover { color: var(--meezan-green); border-bottom-color: var(--meezan-green); }
+        .data-source { font-size: 0.65rem; color: #aaa; margin-top: 8px; line-height: 1.6; }
+        .footer-separator { margin: 0 8px; color: #ddd; }
+        .buymeacoffee-btn { display: inline-block; transition: transform 0.2s, opacity 0.2s; }
+        .buymeacoffee-btn:hover { transform: scale(1.05); opacity: 0.9; }
+        .buymeacoffee-btn img { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 5px; }
+        .language-switcher { position: fixed; right: 20px; bottom: 20px; z-index: 1000; }
+        .language-icon-btn { width: 56px; height: 56px; background: white; border: 2px solid #ddd; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: all 0.3s; }
+        .language-icon-btn:hover { border-color: var(--meezan-green); box-shadow: 0 6px 16px rgba(0,0,0,0.2); transform: scale(1.1); }
+        .language-icon-btn svg { width: 28px; height: 28px; fill: var(--meezan-green); }
+        .language-dropdown { position: absolute; bottom: 70px; right: 0; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 160px; display: none; overflow: hidden; }
+        .language-dropdown.show { display: block; }
+        .language-option { display: block; padding: 12px 20px; background: white; border: none; cursor: pointer; transition: all 0.2s; text-align: left; font-size: 0.9rem; color: #333; border-bottom: 1px solid #f0f0f0; }
+        .language-option:hover { background: #f5f5f5; }
+        .language-option.active { background: var(--meezan-green); color: white; font-weight: 600; }
+        .language-option:last-child { border-bottom: none; }
+        @media (max-width: 1200px) {
+            .language-switcher { position: fixed; right: 15px; bottom: 15px; }
+            .language-dropdown { bottom: 70px; right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="language-switcher">
+    <div class="language-icon-btn" onclick="toggleLanguageDropdown()" id="languageIconBtn" title="Change Language">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+        </svg>
+    </div>
+    <div class="language-dropdown" id="languageDropdown">
+        <div class="language-option active" onclick="switchLanguage('en')" data-lang="en">English</div>
+        <div class="language-option" onclick="switchLanguage('ur')" data-lang="ur">اردو</div>
+        <div class="language-option" onclick="switchLanguage('ps')" data-lang="ps">پښتو</div>
+        <div class="language-option" onclick="switchLanguage('hnd')" data-lang="hnd">ہندکو</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="main-container">
+        <div class="input-section">
+            <h1 id="pageHeaderTitle"></h1>
+            <div class="input-row">
+        <div>
+        <label id="labelCurrentAge"></label>
+            <input type="number" id="currentAge" value="30" min="18" max="100" onkeypress="return validateIntegerInput(event)" oninput="cleanIntegerInput(this); updateFields()" onpaste="setTimeout(() => cleanIntegerInput(this), 0)">
+        </div>
+        <div>
+            <label id="labelRetireAge"></label>
+            <input type="number" id="retireAge" value="60" min="50" max="80" onkeypress="return validateIntegerInput(event)" oninput="cleanIntegerInput(this); updateFields()" onpaste="setTimeout(() => cleanIntegerInput(this), 0)">
+        </div>
+    </div>
+
+    <hr style="margin: 20px 0; border: none; border-top: 2px solid #eee;">
+
+    <div class="input-row">
+        <div>
+            <label id="labelDeathAge">
+                <span id="labelDeathAgeText"></span>
+                <span class="tooltip-container">
+                    <span class="help-icon">?</span>
+                    <div class="tooltip">
+                        <div class="tooltip-title" id="tooltipLifeExpectancyTitle"></div>
+                        <div class="tooltip-example" style="line-height: 1.6;">
+                            <div id="tooltipLifeExpectancyDesc">Pakistan's average life expectancy is approximately <b>68 years</b> (<span id="currentYear"></span>).</div>
+                            <div style="margin-top: 8px; font-size: 0.85rem; color: #ccc;" id="tooltipLifeExpectancyNote">This determines how long you'll receive pension payouts after retirement. Adjust based on your health and family history.</div>
+                        </div>
+                    </div>
+                </span>
+            </label>
+            <input type="number" id="deathAge" value="68" min="60" max="120" onkeypress="return validateIntegerInput(event)" oninput="cleanIntegerInput(this); updateFields()" onpaste="setTimeout(() => cleanIntegerInput(this), 0)">
+        </div>
+        <div>
+            <label id="labelPayoutPeriod"></label>
+            <div style="padding: 10px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; color: #666; cursor: default; user-select: none;" id="payoutPeriodDisplay">96 months (8 years)</div>
+        </div>
+    </div>
+
+    <div class="input-row">
+        <div>
+            <label id="labelStepUp">
+                <span id="labelStepUpText"></span>
+                <span class="tooltip-container">
+                    <span class="help-icon">?</span>
+                    <div class="tooltip" id="stepUpTooltip">
+                        <div class="tooltip-title" id="tooltipStepUpTitle"></div>
+                        <div class="tooltip-toggle">
+                            <button class="tooltip-toggle-btn active" onclick="showStepUpView('normal', event)" id="btnStepUpNormal"></button>
+                            <button class="tooltip-toggle-btn" onclick="showStepUpView('inflation', event)" id="btnStepUpInflation"></button>
+                        </div>
+                        <div class="tooltip-example" id="stepUpExample">
+                            <!-- Content will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </span>
+            </label>
+            <input type="number" id="stepUp" value="10" min="0" max="50" step="0.5" onkeypress="return validateDecimalInput(event)" oninput="cleanDecimalInput(this); updateStepUpTooltip(); calculate()" onpaste="setTimeout(() => cleanDecimalInput(this), 0)">
+        </div>
+        <div>
+            <label id="labelInflation">
+                <span id="labelInflationText"></span>
+                <span class="label-hint" id="labelInflationHint"></span>
+                <span class="tooltip-container">
+                    <span class="help-icon">?</span>
+                    <div class="tooltip" id="inflationTooltip">
+                        <div class="tooltip-title" id="tooltipInflationTitle"></div>
+                        <div class="tooltip-example" id="inflationTooltipContent" style="line-height: 1.6;">
+                            <!-- Content will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </span>
+            </label>
+            <div class="slider-container" style="margin-top: 8px;">
+                <input type="range" id="inflationSlider" value="9" min="5" max="20" step="0.1" oninput="updateInflationFromSlider()">
+                <span class="slider-value" id="inflationValue">9.0%</span>
+            </div>
+            <input type="hidden" id="inflation" value="9">
+        </div>
+    </div>
+
+
+    <hr style="margin: 20px 0; border: none; border-top: 2px solid #eee;">
+
+    <div class="input-row">
+        <div>
+            <label id="labelMonthlyPayout"></label>
+            <input type="text" id="targetPayout" value="100,000" onkeypress="return validateIntegerInput(event)" oninput="formatMoneyInput(this); calculate()" onpaste="setTimeout(() => formatMoneyInput(this), 0)" inputmode="numeric">
+        </div>
+        <div>
+            <label id="labelMonthlyContribution"></label>
+            <input type="text" id="monthlyContribution" value="5,000" onkeypress="return validateIntegerInput(event)" oninput="formatMoneyInput(this); calculate(); updateStepUpTooltip()" onpaste="setTimeout(() => formatMoneyInput(this), 0)" inputmode="numeric">
+        </div>
+    </div>
+        </div>
+
+        <div class="column-divider"></div>
+
+        <div class="results-section">
+            <div id="results" class="results hidden shareable-card" style="margin-top: 0;">
+                <div style="text-align: center; margin-bottom: 12px; border-bottom: 2px dashed #fdd835; padding-bottom: 8px;">
+                    <h3 style="color: #333; margin: 0; font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" id="headerMyPensionPlan"></h3>
+                    <p style="font-size: 0.7rem; color: #666; margin: 3px 0 0 0; font-style: italic;" id="headerPensionPlanner"></p>
+                </div>
+                <div class="stat-box" style="margin-bottom: 10px;">
+                    <span class="stat-title" id="resultLabelStartingAge"></span>
+                    <span class="stat-value" id="resultStartAge"></span>
+                </div>
+                <div class="stat-box" style="margin-bottom: 10px;">
+                    <span class="stat-title" id="resultLabelRetirementAge"></span>
+                    <span class="stat-value" id="resultRetireAge"></span>
+                </div>
+                <div class="stat-box" style="margin-bottom: 10px;">
+                    <span class="stat-title" id="resultLabelPayoutMonths"></span>
+                    <span class="stat-value" id="resultPayoutMonths"></span>
+                </div>
+                <div class="stat-box" style="margin-bottom: 10px;">
+                    <div class="stat-row">
+                        <span class="stat-label" id="contributionLabel"></span>
+                        <span class="stat-number" id="resultContribution"></span>
+                    </div>
+                </div>
+                <div class="stat-box" style="margin-bottom: 10px;">
+                    <span class="stat-title" id="resultTitle"></span>
+                    <span class="stat-value" id="resultPayout"></span>
+                </div>
+                <div class="stat-box" style="margin-bottom: 10px;">
+                    <span class="stat-title" id="resultLabelPotAtRetirement"></span>
+                    <div class="stat-row">
+                        <span class="stat-label" id="resultLabelTotalContributions1"></span>
+                        <span class="stat-number" id="resultTotalContributions"></span>
+                    </div>
+                    <div class="stat-row">
+                        <div>
+                            <span class="stat-label" id="resultLabelProjectedValue"></span>
+                            <div style="font-size: 0.75rem; font-weight: normal; color: #666; margin-top: 2px;" id="resultLabelProjectedValueNote"></div>
+                        </div>
+                        <span class="stat-number" id="resultPot"></span>
+                    </div>
+                </div>
+                <div class="stat-box" style="margin-bottom: 10px;">
+                    <div class="stat-row">
+                        <span class="stat-label" id="resultLabelTotalGrowth"></span>
+                        <span class="stat-number" id="totalGrowth"></span>
+                    </div>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn share-btn-whatsapp" onclick="shareOnWhatsApp()" id="btnShareWhatsApp" title="Share on WhatsApp">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                    </button>
+                    <button class="share-btn share-btn-email" onclick="shareViaEmail()" id="btnShareEmail" title="Share via Email">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </button>
+                    <button class="share-btn share-btn-twitter" onclick="shareOnTwitter()" id="btnShareTwitter" title="Share on Twitter">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div style="margin-top: 15px; text-align: center;">
+                    <a href="https://buymeacoffee.com/msohail01" target="_blank" class="buymeacoffee-btn">
+                        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px; width: 217px;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div>Data aligned with <a href="https://sarmaaya.pk/mutual-funds/9ed85430-ff8f-4b65-8ebc-63e10a6be33c" target="_blank">Meezan GOKP Pension Fund</a> (12.5% est. long-term avg) - <a href="https://sarmaaya.pk/mutual-funds/9ed85430-ff8f-4b65-8ebc-63e10a6be33c" target="_blank">View Performance</a></div>
+        <div class="data-source">
+            Inflation: <a href="https://www.sbp.org.pk/ecodata/index2.asp" target="_blank">State Bank of Pakistan</a> (9% avg)<span class="footer-separator">•</span>
+            Life Expectancy: <a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=PK" target="_blank">World Bank</a> (~68 years)
+        </div>
+    </div>
+</div>
+
+<!-- html2canvas library for image generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+// Language switcher - current language
+// Load saved language from localStorage, default to 'en' if not found
+let currentLanguage = localStorage.getItem('pensionPlannerLanguage') || 'en';
+// Validate the saved language is valid
+const validLanguages = ['en', 'ur', 'ps', 'hnd'];
+if (!validLanguages.includes(currentLanguage)) {
+    currentLanguage = 'en';
+}
+let fontsLoaded = { ur: false, ps: false, hnd: false };
+
+// Function to load fonts dynamically only when needed
+function loadFontsForLanguage(lang) {
+    if (lang === 'en') return; // English uses system fonts, no need to load
+    
+    // Check if fonts already loaded for this language
+    if ((lang === 'ur' || lang === 'hnd') && fontsLoaded.ur) return;
+    if (lang === 'ps' && fontsLoaded.ps) return;
+    
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap';
+    link.media = 'print';
+    link.onload = function() { this.media = 'all'; };
+    document.head.appendChild(link);
+    
+    // Mark as loaded
+    if (lang === 'ur' || lang === 'hnd') fontsLoaded.ur = true;
+    if (lang === 'ps') fontsLoaded.ps = true;
+}
+
+// Translations embedded directly (no fetch needed)
+const translations = {
+  "en": {
+    "currentAge": "Current Age",
+    "retireAge": "Retirement Age",
+    "deathAge": "Life Expectancy (Age)",
+    "payoutPeriod": "Payout Period",
+    "stepUp": "Step-up Saving Yearly (%)",
+    "inflation": "Expected Inflation (%)",
+    "inflationHint": "(Official: 9-12%)",
+    "monthlyPayout": "Monthly Payout at Retirement (PKR)",
+    "monthlyContribution": "Monthly Contribution (PKR)",
+    "startingAge": "Starting Age",
+    "retirementAge": "Retirement Age",
+    "payoutMonths": "Number of Payout Months",
+    "monthlyPayoutAmount": "After Retirement Monthly Payout",
+    "potAtRetirement": "Pot at Retirement",
+    "totalContributions": "Total Contributions",
+    "projectedValue": "Projected Value",
+    "projectedValueNote": "(est. based on fund performance)",
+    "monthlyContributionLabel": "Monthly Contribution:",
+    "totalGrowth": "Total Growth",
+    "myPensionPlan": "My Pension Plan",
+    "pensionPlanner": "Pension Planner",
+    "shareOnWhatsApp": "Share on WhatsApp",
+    "shareViaEmail": "Share via Email",
+    "shareOnTwitter": "Share on Twitter",
+    "dataAligned": "Data aligned with",
+    "viewPerformance": "View Performance",
+    "inflationLabel": "Inflation:",
+    "lifeExpectancyLabel": "Life Expectancy:",
+    "estLongTermAvg": "est. long-term avg",
+    "months": "months",
+    "years": "years",
+    "year": "year",
+    "fromFundProfit": "(From fund profit)",
+    "lifeExpectancyTooltip": "Life Expectancy:",
+    "lifeExpectancyDesc": "Pakistan's average life expectancy is approximately",
+    "lifeExpectancyNote": "This determines how long you'll receive pension payouts after retirement. Adjust based on your health and family history.",
+    "stepUpTitle": "How Step-Up Works:",
+    "stepUpNormal": "Normal",
+    "stepUpWithInflation": "With Inflation",
+    "inflationImpactTitle": "Inflation Impact Warning:",
+    "sharePlanTitle": "Plan your retirement with Pension Planner!",
+    "emailSubject": "My Pension Plan - Pension Planner",
+    "emailImageNote": "Image attached: pension-plan.png",
+    "hashtags": "#PensionPlanner",
+    "footerDataAligned": "Data aligned with",
+    "footerViewPerformance": "View Performance",
+    "pageTitle": "Pension Planner",
+    "languageSwitcherTitle": "Language"
+  },
+  "ur": {
+    "currentAge": "موجودہ عمر",
+    "retireAge": "ریٹائرمنٹ کی عمر",
+    "deathAge": "متوقع زندگی (عمر)",
+    "payoutPeriod": "ادائیگی کی مدت",
+    "stepUp": "سالانہ بچت میں اضافہ (%)",
+    "inflation": "متوقع افراط زر (%)",
+    "inflationHint": "(سرکاری: 9-12%)",
+    "monthlyPayout": "ریٹائرمنٹ پر ماہانہ ادائیگی (PKR)",
+    "monthlyContribution": "ماہانہ شراکت (PKR)",
+    "startingAge": "شروع کی عمر",
+    "retirementAge": "ریٹائرمنٹ کی عمر",
+    "payoutMonths": "ادائیگی کے مہینوں کی تعداد",
+    "monthlyPayoutAmount": "ریٹائرمنٹ کے بعد ماہانہ ادائیگی",
+    "potAtRetirement": "ریٹائرمنٹ پر رقم",
+    "totalContributions": "کل شراکتیں",
+    "projectedValue": "متوقع قیمت",
+    "projectedValueNote": "(فنڈ کی کارکردگی پر مبنی تخمینہ)",
+    "monthlyContributionLabel": "ماہانہ شراکت:",
+    "totalGrowth": "کل اضافہ",
+    "myPensionPlan": "میرا پنشن پلان",
+    "pensionPlanner": "پنشن پلانر",
+    "shareOnWhatsApp": "واٹس ایپ پر شیئر کریں",
+    "shareViaEmail": "ای میل کے ذریعے شیئر کریں",
+    "shareOnTwitter": "ٹویٹر پر شیئر کریں",
+    "dataAligned": "ڈیٹا کے ساتھ منسلک",
+    "viewPerformance": "کارکردگی دیکھیں",
+    "inflationLabel": "افراط زر:",
+    "lifeExpectancyLabel": "متوقع زندگی:",
+    "estLongTermAvg": "طویل مدتی اوسط کا تخمینہ",
+    "months": "مہینے",
+    "years": "سال",
+    "year": "سال",
+    "fromFundProfit": "(فنڈ کے منافع سے)",
+    "lifeExpectancyTooltip": "متوقع زندگی:",
+    "lifeExpectancyDesc": "پاکستان کی اوسط متوقع زندگی تقریباً",
+    "lifeExpectancyNote": "یہ طے کرتا ہے کہ ریٹائرمنٹ کے بعد آپ کتنی دیر تک پنشن کی ادائیگی وصول کریں گے۔ اپنی صحت اور خاندانی تاریخ کی بنیاد پر ایڈجسٹ کریں۔",
+    "stepUpTitle": "اضافہ کیسے کام کرتا ہے:",
+    "stepUpNormal": "عام",
+    "stepUpWithInflation": "افراط زر کے ساتھ",
+    "inflationImpactTitle": "افراط زر کے اثرات کی وارننگ:",
+    "sharePlanTitle": "پنشن پلانر کے ساتھ اپنی ریٹائرمنٹ کی منصوبہ بندی کریں!",
+    "emailSubject": "میرا پنشن پلان - پنشن پلانر",
+    "emailImageNote": "تصویر منسلک: pension-plan.png",
+    "hashtags": "#پنشن_پلانر",
+    "footerDataAligned": "ڈیٹا کے ساتھ منسلک",
+    "footerViewPerformance": "کارکردگی دیکھیں",
+    "pageTitle": "پنشن پلانر",
+    "languageSwitcherTitle": "زبان"
+  },
+  "ps": {
+    "currentAge": "اوسنی عمر",
+    "retireAge": "تقاعد عمر",
+    "deathAge": "د ژوند تمنا (عمر)",
+    "payoutPeriod": "د تادیاتو موده",
+    "stepUp": "کلنی سپما زیاتوالی (%)",
+    "inflation": "تمنا شوی تورم (%)",
+    "inflationHint": "(رسمي: 9-12%)",
+    "monthlyPayout": "په تقاعد کې میاشتنی تادیات (PKR)",
+    "monthlyContribution": "میاشتنی ونډه (PKR)",
+    "startingAge": "د پیل عمر",
+    "retirementAge": "د تقاعد عمر",
+    "payoutMonths": "د تادیاتو میاشتو شمیر",
+    "monthlyPayoutAmount": "د تقاعد وروسته میاشتنی تادیات",
+    "potAtRetirement": "په تقاعد کې پیسې",
+    "totalContributions": "ټول ونډې",
+    "projectedValue": "تمنا شوی ارزښت",
+    "projectedValueNote": "(د فند کارکردګۍ پر بنسټ اټکل)",
+    "monthlyContributionLabel": "میاشتنی ونډه:",
+    "totalGrowth": "ټول زیاتوالی",
+    "myPensionPlan": "زما د تقاعد پلان",
+    "pensionPlanner": "د تقاعد پلان جوړونکی",
+    "shareOnWhatsApp": "په واتساپ کې شریک کړئ",
+    "shareViaEmail": "په بریښنالیک کې شریک کړئ",
+    "shareOnTwitter": "په ټویټر کې شریک کړئ",
+    "dataAligned": "د ډیټا سره تړل شوی",
+    "viewPerformance": "کارکردګۍ وګورئ",
+    "inflationLabel": "تورم:",
+    "lifeExpectancyLabel": "د ژوند تمنا:",
+    "estLongTermAvg": "د اوږدې مودې اوسط اټکل",
+    "months": "میاشتې",
+    "years": "کالونه",
+    "year": "کال",
+    "fromFundProfit": "(د فند ګټې څخه)",
+    "lifeExpectancyTooltip": "د ژوند تمنا:",
+    "lifeExpectancyDesc": "د پاکستان اوسط د ژوند تمنا نږدې",
+    "lifeExpectancyNote": "دا ټاکي چې د تقاعد وروسته تاسو به څومره وخت د تقاعد تادیات ترلاسه کوئ. د خپل روغتیا او کورنۍ تاریخ پر بنسټ تنظیم کړئ.",
+    "stepUpTitle": "زیاتوالی څنګه کار کوي:",
+    "stepUpNormal": "عادي",
+    "stepUpWithInflation": "د تورم سره",
+    "inflationImpactTitle": "د تورم اغیزو خبرتیا:",
+    "sharePlanTitle": "د تقاعد پلان جوړونکی سره خپل تقاعد پلان وکړئ!",
+    "emailSubject": "زما د تقاعد پلان - د تقاعد پلان جوړونکی",
+    "emailImageNote": "انځور ضمیمه: pension-plan.png",
+    "hashtags": "#د_تقاعد_پلان",
+    "footerDataAligned": "د ډیټا سره تړل شوی",
+    "footerViewPerformance": "کارکردګۍ وګورئ",
+    "pageTitle": "د تقاعد پلان جوړونکی",
+    "languageSwitcherTitle": "ژبه"
+  },
+  "hnd": {
+    "currentAge": "حالیہ عمر",
+    "retireAge": "ریٹائرمنٹ دی عمر",
+    "deathAge": "امید زندگی (عمر)",
+    "payoutPeriod": "ادائیگی دی مدت",
+    "stepUp": "سالانہ بچت وچ اضافہ (%)",
+    "inflation": "امید افراط زر (%)",
+    "inflationHint": "(سرکاری: 9-12%)",
+    "monthlyPayout": "ریٹائرمنٹ تے ماہانہ ادائیگی (PKR)",
+    "monthlyContribution": "ماہانہ شراکت (PKR)",
+    "startingAge": "شروع دی عمر",
+    "retirementAge": "ریٹائرمنٹ دی عمر",
+    "payoutMonths": "ادائیگی دے مہیناں دی تعداد",
+    "monthlyPayoutAmount": "ریٹائرمنٹ دے بعد ماہانہ ادائیگی",
+    "potAtRetirement": "ریٹائرمنٹ تے رقم",
+    "totalContributions": "کل شراکتاں",
+    "projectedValue": "امید قیمت",
+    "projectedValueNote": "(فنڈ دی کارکردگی تے مبنی تخمینہ)",
+    "monthlyContributionLabel": "ماہانہ شراکت:",
+    "totalGrowth": "کل اضافہ",
+    "myPensionPlan": "میرا پنشن پلان",
+    "pensionPlanner": "پنشن پلانر",
+    "shareOnWhatsApp": "واٹس ایپ تے شیئر کرو",
+    "shareViaEmail": "ای میل دے ذریعے شیئر کرو",
+    "shareOnTwitter": "ٹویٹر تے شیئر کرو",
+    "dataAligned": "ڈیٹا دے نال منسلک",
+    "viewPerformance": "کارکردگی ڈیکھو",
+    "inflationLabel": "افراط زر:",
+    "lifeExpectancyLabel": "امید زندگی:",
+    "estLongTermAvg": "طویل مدتی اوسط دا تخمینہ",
+    "months": "مہینے",
+    "years": "سال",
+    "year": "سال",
+    "fromFundProfit": "(فنڈ دے منافع توں)",
+    "lifeExpectancyTooltip": "امید زندگی:",
+    "lifeExpectancyDesc": "پاکستان دی اوسط امید زندگی تقریباً",
+    "lifeExpectancyNote": "ایہ طے کریندا اے کہ ریٹائرمنٹ دے بعد تسیں کتنی دیر تک پنشن دی ادائیگی وصول کرو گے۔ اپنی صحت تے خاندانی تاریخ دی بنیاد تے ایڈجسٹ کرو۔",
+    "stepUpTitle": "اضافہ کیویں کم کریندا اے:",
+    "stepUpNormal": "عام",
+    "stepUpWithInflation": "افراط زر دے نال",
+    "inflationImpactTitle": "افراط زر دے اثرات دی وارننگ:",
+    "sharePlanTitle": "پنشن پلانر دے نال اپنی ریٹائرمنٹ دی منصوبہ بندی کرو!",
+    "emailSubject": "میرا پنشن پلان - پنشن پلانر",
+    "emailImageNote": "تصویر منسلک: pension-plan.png",
+    "hashtags": "#پنشن_پلانر",
+    "footerDataAligned": "ڈیٹا دے نال منسلک",
+    "footerViewPerformance": "کارکردگی ڈیکھو",
+    "pageTitle": "پنشن پلانر",
+    "languageSwitcherTitle": "زبان"
+  }
+};
+
+// Function to get current translations object
+function getTranslations() {
+    if (!translations || typeof translations !== 'object' || Object.keys(translations).length === 0) {
+        return {};
+    }
+    // Check if current language exists in translations
+    if (translations[currentLanguage]) {
+        return translations[currentLanguage];
+    }
+    // Fallback to English if current language not found
+    if (translations['en']) {
+        return translations['en'];
+    }
+    // Last resort: return empty object
+    return {};
+}
+
+// Function to get translation
+function t(key) {
+    const trans = getTranslations();
+    // If we have translations and the key exists, return the translation
+    if (trans && trans[key]) {
+        return trans[key];
+    }
+    // If translations are loaded but key not found, return key
+    // If translations not loaded yet, return key (will be updated when loaded)
+    return key;
+}
+
+// Function to validate integer input (only allow numbers, no decimals)
+// Works with both number and text inputs (for money fields with commas)
+function validateIntegerInput(event) {
+    const char = String.fromCharCode(event.which);
+    // Allow: numbers (0-9), backspace, delete, tab, escape, enter, and arrow keys
+    // Also allow Ctrl/Cmd combinations (for copy/paste)
+    if (!/[0-9]/.test(char) && !event.ctrlKey && !event.metaKey && 
+        event.keyCode !== 8 && event.keyCode !== 9 && event.keyCode !== 27 && 
+        event.keyCode !== 13 && (event.keyCode !== 46 || event.target.selectionStart === 0) &&
+        !(event.keyCode >= 35 && event.keyCode <= 40)) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+// Function to validate decimal input (allow numbers and decimal point)
+function validateDecimalInput(event) {
+    const char = String.fromCharCode(event.which);
+    // Allow: numbers (0-9), decimal point (.), backspace, delete, tab, escape, enter, and arrow keys
+    if (!/[0-9.]/.test(char) && !event.ctrlKey && !event.metaKey && 
+        event.keyCode !== 8 && event.keyCode !== 9 && event.keyCode !== 27 && 
+        event.keyCode !== 13 && (event.keyCode !== 46 || event.target.selectionStart === 0) &&
+        !(event.keyCode >= 35 && event.keyCode <= 40)) {
+        event.preventDefault();
+        return false;
+    }
+    // Prevent multiple decimal points
+    if (char === '.' && event.target.value.indexOf('.') !== -1) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+// Function to clean integer input (remove all non-numeric characters)
+function cleanIntegerInput(input) {
+    input.value = input.value.replace(/[^0-9]/g, '');
+}
+
+// Function to clean decimal input (remove non-numeric except decimal point)
+function cleanDecimalInput(input) {
+    let value = input.value;
+    // Remove all non-numeric characters except decimal point
+    value = value.replace(/[^0-9.]/g, '');
+    // Remove multiple decimal points, keep only the first one
+    const parts = value.split('.');
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+    }
+    input.value = value;
+}
+
+// Function to format number with commas (for money display)
+function formatMoney(value) {
+    if (!value && value !== 0) return '';
+    // Remove any existing commas and parse as integer
+    const num = parseInt(value.toString().replace(/,/g, '')) || 0;
+    // Format with commas
+    return num.toLocaleString('en-US');
+}
+
+// Function to parse money value (remove commas and return number)
+function parseMoney(value) {
+    if (!value) return 0;
+    // Remove commas and parse as float
+    return parseFloat(value.toString().replace(/,/g, '')) || 0;
+}
+
+// Function to format money input on input event
+function formatMoneyInput(input) {
+    // Get cursor position before formatting
+    const cursorPosition = input.selectionStart;
+    
+    // Get the text before cursor to count how many digits are before it
+    const textBeforeCursor = input.value.substring(0, cursorPosition);
+    const digitsBeforeCursor = textBeforeCursor.replace(/,/g, '').length;
+    
+    // Parse and format the value
+    const parsed = parseMoney(input.value);
+    const formatted = formatMoney(parsed);
+    
+    // Update the value
+    input.value = formatted;
+    
+    // Calculate new cursor position by finding where the same number of digits are
+    let newPosition = 0;
+    let digitCount = 0;
+    for (let i = 0; i < formatted.length; i++) {
+        if (formatted[i] !== ',') {
+            digitCount++;
+            if (digitCount >= digitsBeforeCursor) {
+                newPosition = i + 1;
+                break;
+            }
+        }
+    }
+    if (newPosition === 0) newPosition = formatted.length;
+    
+    // Set cursor position
+    input.setSelectionRange(newPosition, newPosition);
+}
+
+// Function to toggle language dropdown
+function toggleLanguageDropdown() {
+    const dropdown = document.getElementById('languageDropdown');
+    dropdown.classList.toggle('show');
+}
+
+// Function to switch language
+function switchLanguage(lang) {
+    // Verify translations are available for this language
+    if (!translations || !translations[lang]) {
+        console.warn(`Translations for language '${lang}' not found. Available languages:`, Object.keys(translations || {}));
+        // Don't switch if translations aren't available
+        return;
+    }
+    
+    currentLanguage = lang;
+    
+    // Save language preference to localStorage
+    localStorage.setItem('pensionPlannerLanguage', lang);
+    
+    // Load fonts dynamically only when switching to non-English
+    loadFontsForLanguage(lang);
+    
+    // Update body class, HTML lang and dir attributes for language-specific fonts and RTL support
+    document.body.classList.remove('lang-en', 'lang-ur', 'lang-ps', 'lang-hnd');
+    document.body.classList.add('lang-' + lang);
+    
+    // Set language code
+    const langCode = lang === 'ur' ? 'ur' : lang === 'ps' ? 'ps' : lang === 'hnd' ? 'ur' : 'en';
+    document.documentElement.lang = langCode;
+    
+    // Set direction: RTL for Urdu, Pashto, and Hindko; LTR for English
+    const isRTL = lang === 'ur' || lang === 'ps' || lang === 'hnd';
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.body.dir = isRTL ? 'rtl' : 'ltr';
+    
+    // Update active state of language buttons
+    document.querySelectorAll('.language-option').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Close dropdown
+    document.getElementById('languageDropdown').classList.remove('show');
+    
+    // Re-initialize all translations
+    initializeTranslations();
+    
+    // Update fields to refresh payout period display with new language
+    updateFields();
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const switcher = document.querySelector('.language-switcher');
+    const dropdown = document.getElementById('languageDropdown');
+    if (switcher && dropdown && !switcher.contains(event.target)) {
+        dropdown.classList.remove('show');
+    }
+});
+
+function updateFields() {
+    const currentAge = parseInt(document.getElementById('currentAge').value) || 30;
+    const retireAge = parseInt(document.getElementById('retireAge').value) || 60;
+    const deathAge = parseInt(document.getElementById('deathAge').value) || 68;
+    
+    // Calculate payout period
+    const payoutYears = Math.max(0, deathAge - retireAge);
+    const payoutMonths = payoutYears * 12;
+    document.getElementById('payoutPeriodDisplay').innerText = `${payoutMonths} ${t('months')} (${payoutYears} ${payoutYears === 1 ? t('year') : t('years')})`;
+    
+    updateStepUpTooltip();
+    calculate();
+}
+
+function updateInflationFromSlider() {
+    const sliderValue = parseFloat(document.getElementById('inflationSlider').value);
+    document.getElementById('inflation').value = sliderValue;
+    document.getElementById('inflationValue').innerText = sliderValue.toFixed(1) + '%';
+    updateStepUpTooltip();
+    calculate();
+}
+
+function updateInflationFromInput() {
+    const inputValue = parseFloat(document.getElementById('inflation').value) || 9;
+    const clampedValue = Math.max(5, Math.min(20, inputValue));
+    document.getElementById('inflationSlider').value = clampedValue;
+    document.getElementById('inflationValue').innerText = clampedValue.toFixed(1) + '%';
+    if (inputValue !== clampedValue) {
+        document.getElementById('inflation').value = clampedValue;
+    }
+    updateStepUpTooltip();
+}
+
+let currentTooltipView = 'normal';
+
+function showStepUpView(view, event) {
+    if (event) event.stopPropagation();
+    currentTooltipView = view;
+    
+    // Update button states
+    document.querySelectorAll('.tooltip-toggle-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Update tooltip content
+    updateStepUpTooltip();
+}
+
+function updateStepUpTooltip() {
+    const stepUp = parseFloat(document.getElementById('stepUp').value) || 0;
+    const inflation = parseFloat(document.getElementById('inflationSlider').value) || 0;
+    const currentYear = new Date().getFullYear();
+    
+    // Get contribution amount
+    const baseAmount = parseMoney(document.getElementById('monthlyContribution').value) || 5000;
+    
+    const tooltipExample = document.getElementById('stepUpExample');
+    let html = '';
+    
+    if (currentTooltipView === 'normal') {
+        // Show normal step-up only
+        let currentAmount = baseAmount;
+        
+        for (let i = 0; i < 5; i++) {
+            const year = currentYear + i;
+            const amountFormatted = "Rs. " + Math.round(currentAmount).toLocaleString();
+            
+            html += `<div class="tooltip-year">
+                <span class="tooltip-year-label">${year}:</span>
+                <span class="tooltip-year-value">${amountFormatted}</span>
+            </div>`;
+            
+            // Calculate next year's amount with step-up only
+            if (i < 4) {
+                currentAmount = currentAmount * (1 + stepUp / 100);
+            }
+        }
+    } else {
+        // Show inflation-adjusted (step-up + inflation)
+        const effectiveStepUp = stepUp + inflation;
+        let currentAmount = baseAmount;
+        
+        html += `<div style="font-size: 0.75rem; color: #aaa; margin-bottom: 6px;">${stepUp.toFixed(1)}% step-up + ${inflation.toFixed(1)}% inflation = ${effectiveStepUp.toFixed(1)}% per year</div>`;
+        
+        for (let i = 0; i < 5; i++) {
+            const year = currentYear + i;
+            const amountFormatted = "Rs. " + Math.round(currentAmount).toLocaleString();
+            
+            html += `<div class="tooltip-year">
+                <span class="tooltip-year-label">${year}:</span>
+                <span class="tooltip-year-value">${amountFormatted}</span>
+            </div>`;
+            
+            // Calculate next year's amount with step-up + inflation
+            if (i < 4) {
+                currentAmount = currentAmount * (1 + effectiveStepUp / 100);
+            }
+        }
+    }
+    
+    tooltipExample.innerHTML = html;
+}
+
+function calculate() {
+    const age = parseInt(document.getElementById('currentAge').value);
+    const retireAge = parseInt(document.getElementById('retireAge').value);
+    const deathAge = parseInt(document.getElementById('deathAge').value);
+    const stepUp = parseFloat(document.getElementById('stepUp').value) / 100;
+    const inflation = parseFloat(document.getElementById('inflation').value) / 100;
+    const returnRate = 0.125; // Fixed 12.5% return rate (Meezan GOKP est. long-term avg)
+
+    const years = retireAge - age;
+    const payoutYears = Math.max(1, deathAge - retireAge);
+    const payoutMonths = payoutYears * 12;
+    
+    const inputPayout = parseMoney(document.getElementById('targetPayout').value) || 0;
+    const inputContribution = parseMoney(document.getElementById('monthlyContribution').value) || 0;
+    
+    let requiredPot, monthlyPayout, monthlyContribution, finalPot;
+    let totalContributions = 0;
+    const monthlyReturn = returnRate / 12;
+
+    // Determine which calculation to perform based on inputs
+    // If contribution is entered, calculate payout from it
+    // If only payout is entered (and no contribution), calculate contribution needed
+    // Prioritize contribution over payout
+    if (inputContribution > 0) {
+        // Calculate payout from given contribution
+        monthlyContribution = inputContribution;
+        
+        // Calculate final pot with step-up contributions
+        const effectiveStepUp = stepUp;
+        
+        // Calculate final pot with step-up contributions
+        let testPot = 0;
+        let currentMonthly = monthlyContribution;
+        totalContributions = 0;
+        
+        for(let y=1; y<=years; y++) {
+            for(let m=1; m<=12; m++) {
+                testPot = (testPot + currentMonthly) * (1 + monthlyReturn);
+                totalContributions += currentMonthly;
+            }
+            currentMonthly *= (1 + effectiveStepUp);
+        }
+        
+        finalPot = testPot;
+        
+        // Calculate monthly payout from pot using annuity formula
+        const discountFactor = Math.pow(1 + monthlyReturn, -payoutMonths);
+        monthlyPayout = finalPot * monthlyReturn / (1 - discountFactor);
+        requiredPot = finalPot;
+        
+        // Update payout input with calculated value
+        document.getElementById('targetPayout').value = formatMoney(Math.round(monthlyPayout));
+        
+    } else if (inputPayout > 0) {
+        // Calculate contribution needed for desired payout
+        monthlyPayout = inputPayout;
+        
+        // Calculate required pot at retirement using annuity formula
+        const discountFactor = Math.pow(1 + monthlyReturn, -payoutMonths);
+        requiredPot = monthlyPayout * ((1 - discountFactor) / monthlyReturn);
+
+        // Solve for starting monthly contribution with Step-Up using binary search
+        const effectiveStepUp = stepUp;
+        
+        let low = 0, high = requiredPot;
+        monthlyContribution = 0;
+        
+        for(let i=0; i<40; i++) {
+            monthlyContribution = (low + high) / 2;
+            let testPot = 0;
+            let currentMonthly = monthlyContribution;
+            let totalContrib = 0;
+            
+            for(let y=1; y<=years; y++) {
+                for(let m=1; m<=12; m++) {
+                    testPot = (testPot + currentMonthly) * (1 + monthlyReturn);
+                    totalContrib += currentMonthly;
+                }
+                currentMonthly *= (1 + effectiveStepUp);
+            }
+            
+            if(testPot < requiredPot) low = monthlyContribution;
+            else {
+                high = monthlyContribution;
+                totalContributions = totalContrib;
+            }
+        }
+        finalPot = requiredPot;
+        
+        // Update contribution input with calculated value
+        document.getElementById('monthlyContribution').value = formatMoney(Math.round(monthlyContribution));
+        
+    } else {
+        // No inputs, don't calculate
+        return;
+    }
+
+    // Purchasing Power Calculation
+    const realPower = monthlyPayout / Math.pow(1 + inflation, years);
+    const totalGrowth = finalPot - totalContributions;
+
+    // Display Results
+    document.getElementById('results').classList.remove('hidden');
+    document.getElementById('resultStartAge').innerText = age + " " + t('years');
+    document.getElementById('resultRetireAge').innerText = retireAge + " " + t('years');
+    document.getElementById('resultPayoutMonths').innerText = payoutMonths + " " + t('months') + " (" + payoutYears + " " + (payoutYears === 1 ? t('year') : t('years')) + ")";
+    
+    document.getElementById('resultPayout').innerText = "Rs. " + Math.round(monthlyPayout).toLocaleString();
+    
+    document.getElementById('resultContribution').innerText = "Rs. " + Math.round(monthlyContribution).toLocaleString();
+    document.getElementById('resultTotalContributions').innerText = "Rs. " + Math.round(totalContributions).toLocaleString();
+    document.getElementById('resultPot').innerText = "Rs. " + Math.round(finalPot).toLocaleString();
+    document.getElementById('totalGrowth').innerText = "Rs. " + Math.round(totalGrowth).toLocaleString();
+    
+    // Inflation warning - Update tooltip and warning box
+    const retirementYear = new Date().getFullYear() + years;
+    const futureCost = Math.round(100000 * Math.pow(1 + inflation, years));
+    
+    // Update inflation tooltip with full details
+    document.getElementById('inflationTooltipContent').innerHTML = 
+        `<div style="margin-bottom: 8px;">Your <b>Rs. ${Math.round(monthlyPayout).toLocaleString()}</b> monthly payout in ${retirementYear} will have the same buying power as <b>Rs. ${Math.round(realPower).toLocaleString()}</b> today.</div>` +
+        `<div style="margin-bottom: 8px;">This means what costs <b>Rs. 100,000</b> today will cost approximately <b>Rs. ${futureCost.toLocaleString()}</b> in ${retirementYear} due to <b>${(inflation*100).toFixed(1)}%</b> average inflation.</div>` +
+        `<div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #555; font-size: 0.85rem; color: #ccc;"><b>💡 Tip:</b> Use the "With Inflation" option in the Step-up tooltip to see how adjusting contributions for inflation affects your plan.</div>`;
+}
+
+// Sharing functions
+function getShareText() {
+    const startAge = document.getElementById('resultStartAge').innerText;
+    const retireAge = document.getElementById('resultRetireAge').innerText;
+    const payout = document.getElementById('resultPayout').innerText;
+    const contribution = document.getElementById('resultContribution').innerText;
+    const pot = document.getElementById('resultPot').innerText;
+    
+    const currentYear = new Date().getFullYear();
+    return `📊 ${t('myPensionPlan')} (Pakistan ${currentYear})\n\n` +
+           `${t('startingAge')}: ${startAge}\n` +
+           `${t('retirementAge')}: ${retireAge}\n` +
+           `${t('monthlyContributionLabel')} ${contribution}\n` +
+           `${t('monthlyPayoutAmount')}: ${payout}\n` +
+           `${t('potAtRetirement')}: ${pot}\n` +
+           `\n${t('sharePlanTitle')}\n` +
+           `${window.location.href}\n\n` +
+           `${t('hashtags')}`;
+}
+
+function shareOnWhatsApp() {
+    const text = getShareText();
+    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+}
+
+function shareViaEmail() {
+    const subject = t('emailSubject');
+    const body = getShareText();
+    const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = url;
+}
+
+function shareOnTwitter() {
+    const text = getShareText();
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+}
+
+// Initialize all text from translations
+function initializeTranslations() {
+    // Input labels
+    const labelMap = {
+        'labelCurrentAge': 'currentAge',
+        'labelRetireAge': 'retireAge',
+        'labelDeathAgeText': 'deathAge',
+        'labelPayoutPeriod': 'payoutPeriod',
+        'labelStepUpText': 'stepUp',
+        'labelInflationText': 'inflation',
+        'labelInflationHint': 'inflationHint',
+        'labelMonthlyPayout': 'monthlyPayout',
+        'labelMonthlyContribution': 'monthlyContribution'
+    };
+    
+    for (const [id, key] of Object.entries(labelMap)) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = t(key);
+    }
+    
+    // Result labels
+    const resultLabelMap = {
+        'resultLabelStartingAge': 'startingAge',
+        'resultLabelRetirementAge': 'retirementAge',
+        'resultLabelPayoutMonths': 'payoutMonths',
+        'resultTitle': 'monthlyPayoutAmount',
+        'resultLabelPotAtRetirement': 'potAtRetirement',
+        'resultLabelTotalContributions1': 'totalContributions',
+        'resultLabelProjectedValue': 'projectedValue',
+        'resultLabelProjectedValueNote': 'projectedValueNote',
+        'contributionLabel': 'monthlyContributionLabel',
+        'resultLabelTotalGrowth': 'totalGrowth'
+    };
+    
+    for (const [id, key] of Object.entries(resultLabelMap)) {
+        const el = document.getElementById(id);
+        if (el) {
+            if (id === 'resultLabelProjectedValueNote') {
+                el.innerText = t(key);
+            } else if (id === 'resultLabelTotalContributions1' || id === 'resultLabelProjectedValue') {
+                // Add colon for these labels
+                el.innerText = t(key) + ':';
+            } else {
+                el.innerText = t(key);
+            }
+        }
+    }
+    
+    // Tooltips
+    const tooltipMap = {
+        'tooltipLifeExpectancyTitle': 'lifeExpectancyTooltip',
+        'tooltipStepUpTitle': 'stepUpTitle',
+        'tooltipInflationTitle': 'inflationImpactTitle',
+        'btnStepUpNormal': 'stepUpNormal',
+        'btnStepUpInflation': 'stepUpWithInflation'
+    };
+    
+    for (const [id, key] of Object.entries(tooltipMap)) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = t(key);
+    }
+    
+    // Update life expectancy tooltip description
+    const lifeExpectancyDesc = document.getElementById('tooltipLifeExpectancyDesc');
+    if (lifeExpectancyDesc) {
+        const currentYear = new Date().getFullYear();
+        lifeExpectancyDesc.innerHTML = `${t('lifeExpectancyDesc')} <b>68 ${t('years')}</b> (${currentYear}).`;
+    }
+    
+    const lifeExpectancyNote = document.getElementById('tooltipLifeExpectancyNote');
+    if (lifeExpectancyNote) {
+        lifeExpectancyNote.innerText = t('lifeExpectancyNote');
+    }
+    
+    // Header
+    const headerMyPensionPlan = document.getElementById('headerMyPensionPlan');
+    if (headerMyPensionPlan) headerMyPensionPlan.innerText = t('myPensionPlan');
+    
+    const headerPensionPlanner = document.getElementById('headerPensionPlanner');
+    if (headerPensionPlanner) headerPensionPlanner.innerText = t('pensionPlanner');
+    
+    // Page title
+    const pageHeaderTitle = document.getElementById('pageHeaderTitle');
+    if (pageHeaderTitle) {
+        const currentYear = new Date().getFullYear();
+        pageHeaderTitle.innerHTML = `${t('pageTitle')} (Pakistan <span id="headerYear">${currentYear}</span>)`;
+    }
+    
+    // Document title
+    document.title = t('pageTitle') + ' | Pakistan';
+    
+    // Share buttons
+    const shareBtnMap = {
+        'btnShareWhatsApp': 'shareOnWhatsApp',
+        'btnShareEmail': 'shareViaEmail',
+        'btnShareTwitter': 'shareOnTwitter'
+    };
+    
+    for (const [id, key] of Object.entries(shareBtnMap)) {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('title', t(key));
+    }
+    
+    // Footer
+    const footerLinks = document.querySelectorAll('.footer a');
+    // Footer text is handled separately in HTML structure
+}
+
+// Initialize fields on load
+document.getElementById('inflationValue').innerText = document.getElementById('inflation').value + '%';
+const currentYear = new Date().getFullYear();
+const yearElement = document.getElementById('currentYear');
+if (yearElement) yearElement.innerText = currentYear;
+const headerYearElement = document.getElementById('headerYear');
+if (headerYearElement) headerYearElement.innerText = currentYear;
+
+// Set initial active language, font, and direction (from saved preference)
+document.body.classList.add('lang-' + currentLanguage);
+const isRTLInitial = currentLanguage === 'ur' || currentLanguage === 'ps' || currentLanguage === 'hnd';
+document.documentElement.dir = isRTLInitial ? 'rtl' : 'ltr';
+document.body.dir = isRTLInitial ? 'rtl' : 'ltr';
+
+// Set language code
+const langCode = currentLanguage === 'ur' ? 'ur' : currentLanguage === 'ps' ? 'ps' : currentLanguage === 'hnd' ? 'ur' : 'en';
+document.documentElement.lang = langCode;
+
+// Load fonts for saved language if needed
+loadFontsForLanguage(currentLanguage);
+
+// Update active state of language buttons
+document.querySelectorAll('.language-option').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-lang') === currentLanguage) {
+        btn.classList.add('active');
+    }
+});
+
+// Initialize translations (now embedded, no need to load)
+initializeTranslations();
+updateFields();
+</script>
+</body>
+</html>
