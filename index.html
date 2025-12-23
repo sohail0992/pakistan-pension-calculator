@@ -435,6 +435,7 @@
             Life Expectancy: <a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=PK" target="_blank">World Bank</a> (~68 years)
         </div>
         <div style="margin-top: 10px;">
+            <a href="https://www.almeezangroup.com/investing-with-us/" target="_blank" id="howToInvestLink">How to Invest</a><span class="footer-separator">•</span>
             <a href="https://sohail0992.github.io/pakistan-pension-calculator/" target="_blank" id="websiteLink">Visit Website</a>
         </div>
     </div>
@@ -524,7 +525,9 @@ const translations = {
     "hashtags": "#PensionPlanner",
     "footerDataAligned": "Data aligned with",
     "visitWebsite": "Visit Website",
+    "howToInvest": "How to Invest",
     "footerViewPerformance": "View Performance",
+    "howToInvest": "How to Invest",
     "pageTitle": "Pension Planner",
     "languageSwitcherTitle": "Language"
   },
@@ -576,6 +579,7 @@ const translations = {
     "hashtags": "#پنشن_پلانر",
     "footerDataAligned": "ڈیٹا کے ساتھ منسلک",
     "visitWebsite": "ویب سائٹ ملاحظہ کریں",
+    "howToInvest": "کیسے سرمایہ کاری کریں",
     "footerViewPerformance": "کارکردگی دیکھیں",
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان"
@@ -628,6 +632,7 @@ const translations = {
     "hashtags": "#د_تقاعد_پلان",
     "footerDataAligned": "د ډیټا سره تړل شوی",
     "visitWebsite": "ویب پاڼه وګورئ",
+    "howToInvest": "څنګه پانګه اچونه وکړئ",
     "footerViewPerformance": "کارکردګۍ وګورئ",
     "pageTitle": "د تقاعد پلان جوړونکی",
     "languageSwitcherTitle": "ژبه"
@@ -680,6 +685,7 @@ const translations = {
     "hashtags": "#پنشن_پلانر",
     "footerDataAligned": "ڈیٹا دے نال منسلک",
     "footerViewPerformance": "کارکردگی ڈیکھو",
+    "howToInvest": "کیویں سرمایہ کاری کرو",
     "visitWebsite": "ویب سائٹ ڈیکھو",
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان"
@@ -1391,6 +1397,12 @@ function initializeTranslations() {
     const websiteLink = document.getElementById('websiteLink');
     if (websiteLink) {
         websiteLink.innerText = t('visitWebsite');
+    }
+    
+    // Update how to invest link text
+    const howToInvestLink = document.getElementById('howToInvestLink');
+    if (howToInvestLink) {
+        howToInvestLink.innerText = t('howToInvest');
     }
 }
 
