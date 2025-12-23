@@ -435,8 +435,7 @@
             Life Expectancy: <a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=PK" target="_blank">World Bank</a> (~68 years)
         </div>
         <div style="margin-top: 10px;">
-            <a href="https://www.almeezangroup.com/investing-with-us/" target="_blank" id="howToInvestLink">How to Invest</a><span class="footer-separator">•</span>
-            <a href="https://sohail0992.github.io/pakistan-pension-calculator/" target="_blank" id="websiteLink">Visit Website</a>
+            <a href="how-to-invest.html" id="howToInvestLink">How to Invest</a>
         </div>
     </div>
 </div>
@@ -1392,12 +1391,6 @@ function initializeTranslations() {
     // Footer
     const footerLinks = document.querySelectorAll('.footer a');
     // Footer text is handled separately in HTML structure
-    
-    // Update website link text
-    const websiteLink = document.getElementById('websiteLink');
-    if (websiteLink) {
-        websiteLink.innerText = t('visitWebsite');
-    }
     
     // Update how to invest link text
     const howToInvestLink = document.getElementById('howToInvestLink');
