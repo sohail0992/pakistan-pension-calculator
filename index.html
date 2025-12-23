@@ -245,6 +245,41 @@
             border-left: none;
             border-right: 4px solid var(--meezan-green);
         }
+        .explanation-intro {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .explanation-intro p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .explanation-disclaimer {
+            margin-top: 30px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+        }
+        .explanation-disclaimer h3 {
+            color: #856404;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+        .explanation-disclaimer p {
+            font-size: 0.85rem;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .explanation-disclaimer ul {
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        .explanation-dynamic {
+            font-weight: bold;
+            color: var(--meezan-green);
+        }
     </style>
 </head>
 <body>
@@ -366,24 +401,32 @@
             <span id="explanationToggleIcon">▼</span>
         </button>
         <div class="explanation-content" id="explanationContent" style="display: none;">
-            <div class="explanation-section">
-                <h3 id="explanationTitle1">Simple Math - Three Steps</h3>
-                <p id="explanationText1"><strong>1. Total Contributions:</strong> We add up all your monthly contributions over the years, including the step-up increase each year.</p>
-                <p id="explanationText2"><strong>Example:</strong> If you start with Rs. 5,000/month and increase by 10% each year for 30 years, your total contributions will be calculated month by month.</p>
+            <div class="explanation-intro">
+                <p id="explanationIntroText"></p>
             </div>
             
             <div class="explanation-section">
-                <h3 id="explanationTitle2">Fund Performance</h3>
-                <p id="explanationText3">Your money grows at <strong>12.5% per year</strong> (Meezan GOKP Pension Fund estimated long-term average).</p>
-                <p id="explanationText4">Each month, your balance grows: <strong>New Balance = (Old Balance + Your Contribution) × 1.0104</strong></p>
-                <p id="explanationText5">This happens every month for all the years until retirement.</p>
-            </div>
+                <h3 id="explanationTitle1">1. Planning Your Goal (The Inputs)</h3>
+                <p id="explanationText1"></p>
+                <ul id="explanationList1"></ul>
+    </div>
+
+            <div class="explanation-section">
+                <h3 id="explanationTitle2">2. How the Money Grows (The Calculation)</h3>
+                <p id="explanationText2"></p>
+                <ul id="explanationList2"></ul>
+</div>
             
             <div class="explanation-section">
-                <h3 id="explanationTitle3">Final Amount</h3>
-                <p id="explanationText6">After all years of contributions and growth, you get your <strong>Projected Value</strong> - this is how much your money has grown to.</p>
-                <p id="explanationText7"><strong>Total Growth = Projected Value - Total Contributions</strong></p>
-                <p id="explanationText8">This final amount is then converted into monthly payouts for your retirement years.</p>
+                <h3 id="explanationTitle3">3. Your Final Result (The Payout)</h3>
+                <p id="explanationText3"></p>
+                <ul id="explanationList3"></ul>
+            </div>
+            
+            <div class="explanation-disclaimer">
+                <h3 id="explanationDisclaimerTitle"></h3>
+                <p id="explanationDisclaimerText"></p>
+                <ul id="explanationDisclaimerList"></ul>
             </div>
         </div>
     </div>
@@ -572,17 +615,19 @@ const translations = {
     "pageTitle": "Pension Planner",
     "languageSwitcherTitle": "Language",
     "explanationToggle": "📖 How Calculations Work",
-    "explanationTitle1": "Simple Math - Three Steps",
-    "explanationText1": "1. Total Contributions: We add up all your monthly contributions over the years, including the step-up increase each year.",
-    "explanationText2": "Example: If you start with Rs. 5,000/month and increase by 10% each year for 30 years, your total contributions will be calculated month by month.",
-    "explanationTitle2": "Fund Performance",
-    "explanationText3": "Your money grows at 12.5% per year (Meezan GOKP Pension Fund estimated long-term average).",
-    "explanationText4": "Each month, your balance grows: New Balance = (Old Balance + Your Contribution) × 1.0104",
-    "explanationText5": "This happens every month for all the years until retirement.",
-    "explanationTitle3": "Final Amount",
-    "explanationText6": "After all years of contributions and growth, you get your Projected Value - this is how much your money has grown to.",
-    "explanationText7": "Total Growth = Projected Value - Total Contributions",
-    "explanationText8": "This final amount is then converted into monthly payouts for your retirement years."
+    "explanationIntroText": "This planner is designed to help you work backward from your dream retirement. If you have a specific goal—like wanting {monthlyPayout} every month after you stop working—this tool tells you exactly what to save today to make that happen.<br><br>Here is how the system calculates your future wealth and determines your monthly payout.",
+    "explanationTitle1": "1. Planning Your Goal (The Inputs)",
+    "explanationText1": "First, you set the parameters based on your life and expectations:",
+    "explanationList1": "<li><strong>Your Timeline:</strong> You define your current age (e.g., {currentAge}) and when you want to retire (e.g., {retireAge}).</li><li><strong>Life Expectancy:</strong> You choose how long you expect to live (e.g., {deathAge} years), which determines how many months your savings need to last ({payoutYears} years).</li><li><strong>Step-up Savings:</strong> You can plan to increase your contribution by a percentage (e.g., {stepUpPercent}%) every year as your income grows.</li>",
+    "explanationTitle2": "2. How the Money Grows (The Calculation)",
+    "explanationText2": "While you go about your life, the tool calculates your fund's progress through two main stages:",
+    "explanationList2": "<li><strong>Total Contributions:</strong> We add up every monthly payment you make over {years} years, accounting for your yearly {stepUpPercent}% increases. In this example, your total out-of-pocket cost is {totalContributions}.</li><li><strong>Fund Growth:</strong> Your money is invested at an estimated <strong>12.5% annual return</strong>. Every month, the \"magic\" of compounding happens: your new balance is calculated by adding your contribution to your old balance and multiplying it by the growth factor.</li>",
+    "explanationTitle3": "3. Your Final Result (The Payout)",
+    "explanationText3": "At the end of your working years, you are left with a \"Projected Value\".",
+    "explanationList3": "<li><strong>The Total Pot:</strong> By age {retireAge}, your fund is projected to reach {finalPot}.</li><li><strong>The Profit:</strong> Of that total, {totalGrowth} is the growth earned from the investment.</li><li><strong>Your Monthly Income:</strong> This large sum is then divided into monthly checks. Based on your settings, you would receive {monthlyPayout} every month for your {payoutYears}-year payout period.</li>",
+    "explanationDisclaimerTitle": "Disclaimer",
+    "explanationDisclaimerText": "<strong>Personal Research & Non-Liability Notice</strong><br>This tool is a product of my <strong>personal research</strong> and is for educational and illustrative purposes only.",
+    "explanationDisclaimerList": "<li><strong>Projections Only:</strong> These figures are based on estimated fund performance and are not a guarantee of future results.</li><li><strong>No Liability:</strong> I am <strong>not responsible</strong> for any financial losses or decisions made based on these calculations.</li><li><strong>Seek Professional Advice:</strong> This is not professional financial advice. Please consult a certified advisor before making any investment commitments.</li>"
   },
   "ur": {
     "currentAge": "موجودہ عمر",
@@ -637,17 +682,19 @@ const translations = {
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان",
     "explanationToggle": "📖 حساب کیسے کام کرتے ہیں",
-    "explanationTitle1": "سادہ حساب - تین مراحل",
-    "explanationText1": "1. کل شراکتیں: ہم تمام سالوں میں آپ کی ماہانہ شراکتوں کو جمع کرتے ہیں، بشمول ہر سال اضافہ۔",
-    "explanationText2": "مثال: اگر آپ Rs. 5,000/ماہ سے شروع کریں اور 30 سال تک ہر سال 10% بڑھائیں، تو آپ کی کل شراکتیں مہینہ بہ مہینہ حساب کی جائیں گی۔",
-    "explanationTitle2": "فنڈ کی کارکردگی",
-    "explanationText3": "آپ کا پیسہ سالانہ 12.5% بڑھتا ہے (المیزان GOKP پنشن فنڈ کا طویل مدتی اوسط تخمینہ)۔",
-    "explanationText4": "ہر مہینہ، آپ کا بیلنس بڑھتا ہے: نیا بیلنس = (پرانے بیلنس + آپ کی شراکت) × 1.0104",
-    "explanationText5": "یہ ریٹائرمنٹ تک تمام سالوں میں ہر مہینہ ہوتا ہے۔",
-    "explanationTitle3": "حتمی رقم",
-    "explanationText6": "تمام سالوں کی شراکتوں اور نمو کے بعد، آپ کو اپنی متوقع قیمت ملتی ہے - یہ وہ رقم ہے جس تک آپ کا پیسہ بڑھا ہے۔",
-    "explanationText7": "کل نمو = متوقع قیمت - کل شراکتیں",
-    "explanationText8": "یہ حتمی رقم پھر آپ کے ریٹائرمنٹ سالوں کے لیے ماہانہ ادائیگیوں میں تبدیل ہوتی ہے۔"
+    "explanationIntroText": "یہ پلانر آپ کی خوابیدہ ریٹائرمنٹ سے پیچھے کی طرف کام کرنے میں مدد کے لیے ڈیزائن کیا گیا ہے۔ اگر آپ کا ایک مخصوص مقصد ہے—جیسے کام چھوڑنے کے بعد ہر مہینہ {monthlyPayout} چاہتے ہیں—تو یہ ٹول آپ کو بالکل بتاتا ہے کہ آج کتنا بچانا ہے تاکہ یہ ہو سکے۔<br><br>یہاں بتایا گیا ہے کہ نظام آپ کی مستقبل کی دولت کا حساب کیسے لگاتا ہے اور آپ کی ماہانہ ادائیگی کا تعین کرتا ہے۔",
+    "explanationTitle1": "1. اپنے مقصد کی منصوبہ بندی (ان پٹس)",
+    "explanationText1": "پہلے، آپ اپنی زندگی اور توقعات کی بنیاد پر پیرامیٹرز سیٹ کرتے ہیں:",
+    "explanationList1": "<li><strong>آپ کا ٹائم لائن:</strong> آپ اپنی موجودہ عمر (مثلاً {currentAge}) اور جب آپ ریٹائر ہونا چاہتے ہیں (مثلاً {retireAge}) کی وضاحت کرتے ہیں۔</li><li><strong>امید زندگی:</strong> آپ انتخاب کرتے ہیں کہ آپ کتنی دیر تک زندہ رہنے کی توقع رکھتے ہیں (مثلاً {deathAge} سال)، جو یہ طے کرتا ہے کہ آپ کی بچت کتنے مہینے چلنی چاہیے ({payoutYears} سال)۔</li><li><strong>اضافہ بچت:</strong> آپ اپنی آمدنی بڑھنے کے ساتھ ہر سال ایک فیصد (مثلاً {stepUpPercent}%) سے اپنی شراکت بڑھانے کی منصوبہ بندی کر سکتے ہیں۔</li>",
+    "explanationTitle2": "2. پیسہ کیسے بڑھتا ہے (حساب)",
+    "explanationText2": "جب آپ اپنی زندگی گزارتے ہیں، تو ٹول دو اہم مراحل کے ذریعے آپ کے فنڈ کی پیشرفت کا حساب لگاتا ہے:",
+    "explanationList2": "<li><strong>کل شراکتیں:</strong> ہم {years} سالوں میں آپ کی ہر ماہانہ ادائیگی کو جمع کرتے ہیں، آپ کے سالانہ {stepUpPercent}% اضافے کو مدنظر رکھتے ہوئے۔ اس مثال میں، آپ کی کل جیب سے اخراجات {totalContributions} ہیں۔</li><li><strong>فنڈ کی نمو:</strong> آپ کا پیسہ <strong>12.5% سالانہ واپسی</strong> کے تخمینے پر سرمایہ کاری کی جاتی ہے۔ ہر مہینہ، مرکب کا \"جادو\" ہوتا ہے: آپ کا نیا بیلنس آپ کی شراکت کو پرانے بیلنس میں شامل کرکے اور اسے نمو کے عنصر سے ضرب دے کر حساب کیا جاتا ہے۔</li>",
+    "explanationTitle3": "3. آپ کا حتمی نتیجہ (ادائیگی)",
+    "explanationText3": "آپ کے کام کے سالوں کے اختتام پر، آپ کے پاس ایک \"متوقع قیمت\" باقی رہ جاتی ہے۔",
+    "explanationList3": "<li><strong>کل پوٹ:</strong> {retireAge} سال کی عمر تک، آپ کے فنڈ کے {finalPot} تک پہنچنے کا تخمینہ لگایا گیا ہے۔</li><li><strong>منافع:</strong> اس کل میں سے، {totalGrowth} سرمایہ کاری سے حاصل کردہ نمو ہے۔</li><li><strong>آپ کی ماہانہ آمدنی:</strong> یہ بڑی رقم پھر ماہانہ چیکوں میں تقسیم ہوتی ہے۔ آپ کی ترتیبات کی بنیاد پر، آپ کو اپنی {payoutYears}-سالہ ادائیگی کی مدت کے لیے ہر مہینہ {monthlyPayout} ملے گا۔</li>",
+    "explanationDisclaimerTitle": "ڈس کلیمر",
+    "explanationDisclaimerText": "<strong>ذاتی تحقیق اور غیر ذمہ داری کا نوٹس</strong><br>یہ ٹول میری <strong>ذاتی تحقیق</strong> کا نتیجہ ہے اور صرف تعلیمی اور وضاحتی مقاصد کے لیے ہے۔",
+    "explanationDisclaimerList": "<li><strong>صرف تخمینے:</strong> یہ اعداد و شمار تخمینی فنڈ کی کارکردگی پر مبنی ہیں اور مستقبل کے نتائج کی ضمانت نہیں ہیں۔</li><li><strong>کوئی ذمہ داری نہیں:</strong> میں ان مالی نقصانات یا ان حسابوں کی بنیاد پر کیے گئے فیصلوں کے لیے <strong>ذمہ دار نہیں</strong> ہوں۔</li><strong>پیشہ ورانہ مشورہ لیں:</strong> یہ پیشہ ورانہ مالی مشورہ نہیں ہے۔ براہ کرم کوئی سرمایہ کاری کا عہد کرنے سے پہلے ایک سرٹیفائیڈ مشیر سے مشورہ کریں۔</li>"
   },
   "ps": {
     "currentAge": "اوسنی عمر",
@@ -702,17 +749,19 @@ const translations = {
     "pageTitle": "د تقاعد پلان جوړونکی",
     "languageSwitcherTitle": "ژبه",
     "explanationToggle": "📖 محاسبه څنګه کار کوي",
-    "explanationTitle1": "ساده محاسبه - درې ګامونه",
-    "explanationText1": "1. ټول ونډې: موږ د ټولو کلونو په اوږدو کې ستاسو میاشتنی ونډې جمع کوو، د هر کال زیاتوالي په ګډون.",
-    "explanationText2": "بېلګه: که تاسو د Rs. 5,000/میاشت سره پیل وکړئ او د 30 کلونو لپاره هر کال 10% زیاتوالی ورکړئ، ستاسو ټول ونډې به میاشت په میاشت محاسبه شي.",
-    "explanationTitle2": "د فند کارکردګۍ",
-    "explanationText3": "ستاسو پیسې کلنی 12.5% وده کوي (المیزان GOKP د تقاعد فند د اوږدې مودې اوسط اټکل).",
-    "explanationText4": "هر میاشت، ستاسو بیلانس وده کوي: نوی بیلانس = (زړه بیلانس + ستاسو ونډه) × 1.0104",
-    "explanationText5": "دا د تقاعد تر ټولو کلونو پورې هر میاشت پیښیږي.",
-    "explanationTitle3": "وروستۍ اندازه",
-    "explanationText6": "د ټولو کلونو ونډو او ودی وروسته، تاسو خپل تمنا شوی ارزښت ترلاسه کوئ - دا هغه اندازه ده چې ستاسو پیسې ورته وده کړې.",
-    "explanationText7": "ټول زیاتوالی = تمنا شوی ارزښت - ټول ونډې",
-    "explanationText8": "دا وروستۍ اندازه بیا د ستاسو د تقاعد کلونو لپاره میاشتنی تادیاتو ته بدلېږي."
+    "explanationIntroText": "دا پلان جوړونکی ستاسو د خوښیدو تقاعد څخه شاته کار کولو لپاره ډیزاین شوی دی. که تاسو یو ځانګړی موخه لرئ—لکه د کار پرېښودو وروسته هر میاشت {monthlyPayout} غواړئ—دا وسیله تاسو ته دقیقاً وایي چې نن څومره خوندي کړئ ترڅو دا پیښه شي.<br><br>دلته داسې ښودل شوي چې سیسټم ستاسو د راتلونکي شتمنۍ محاسبه څنګه کوي او ستاسو میاشتنی تادیات ټاکي.",
+    "explanationTitle1": "1. د ستاسو موخې پلان جوړول (ان پوټونه)",
+    "explanationText1": "لومړی، تاسو د خپل ژوند او تمناونو پر بنسټ پیرامیټرونه تنظیم کوئ:",
+    "explanationList1": "<li><strong>ستاسو وخت:</strong> تاسو خپل اوسنی عمر (د بېلګې په توګه، {currentAge}) او کله چې تاسو تقاعد غواړئ (د بېلګې په توګه، {retireAge}) تعریف کوئ.</li><li><strong>د ژوند تمنا:</strong> تاسو انتخاب کوئ چې تاسو څومره وخت ژوند کولو تمنا لرئ (د بېلګې په توګه، {deathAge} کلونه)، کوم چې ټاکي چې ستاسو سپما باید څومره میاشتې دوام وکړي ({payoutYears} کلونه).</li><li><strong>د زیاتوالي سپما:</strong> تاسو کولی شئ د خپل عاید د ودې سره هر کال د یوې سلنې (د بېلګې په توګه، {stepUpPercent}%) سره خپل ونډه زیاتولو پلان وکړئ.</li>",
+    "explanationTitle2": "2. پیسې څنګه وده کوي (محاسبه)",
+    "explanationText2": "کله چې تاسو خپل ژوند تېروئ، وسیله د دوو اصلي پړاوونو له لارې ستاسو د فند پرمختګ محاسبه کوي:",
+    "explanationList2": "<li><strong>ټول ونډې:</strong> موږ د {years} کلونو په اوږدو کې ستاسو هر میاشتنی تادیات جمع کوو، د ستاسو کلني {stepUpPercent}% زیاتوالي حساب کولو سره. پدې بېلګه کې، ستاسو د جیب څخه ټول لګښت {totalContributions} دی.</li><li><strong>د فند وده:</strong> ستاسو پیسې د <strong>12.5% کلني بیرته راګرځېدلو</strong> اټکل سره پانګه اچول کېږي. هر میاشت، د مرکب \"جادو\" پیښیږي: ستاسو نوی بیلانس د ستاسو ونډه د زړه بیلانس سره اضافه کولو او د ودې فکتور سره ضرب کولو سره محاسبه کېږي.</li>",
+    "explanationTitle3": "3. ستاسو وروستۍ پایله (تادیات)",
+    "explanationText3": "د ستاسو د کار کلونو په پای کې، تاسو یو \"تمنا شوی ارزښت\" سره پاتې شئ.",
+    "explanationList3": "<li><strong>ټول پوټ:</strong> د {retireAge} کلونو عمر پورې، ستاسو فند {finalPot} ته رسیدو اټکل شوی دی.</li><strong>ګټه:</strong> د دې ټول څخه، {totalGrowth} د پانګه اچونې څخه ترلاسه شوې وده ده.</li><li><strong>ستاسو میاشتنی عاید:</strong> دا لویه اندازه بیا میاشتنی چیکونو ته ویشل کېږي. د ستاسو ترتیباتو پر بنسټ، تاسو به د خپل {payoutYears}-کلن تادیاتو مودې لپاره هر میاشت {monthlyPayout} ترلاسه کړئ.</li>",
+    "explanationDisclaimerTitle": "د مسؤلیت ردول",
+    "explanationDisclaimerText": "<strong>شخصي څیړنه او د مسؤلیت ردولو خبرتیا</strong><br>دا وسیله زما د <strong>شخصي څیړنې</strong> محصول دی او یوازې د تعلیمي او تشریحي موخو لپاره دی.",
+    "explanationDisclaimerList": "<li><strong>یوازې اټکلونه:</strong> دا اعداد د اټکل شوي فند کارکردګۍ پر بنسټ دي او د راتلونکو پایلو تضمین ندي.</li><li><strong>کوم مسؤلیت نشته:</strong> زه د دې محاسباتو پر بنسټ د کومو مالي زیانونو یا پریکړو لپاره <strong>مسؤلیت نه لرم</strong>.</li><li><strong>پیشه ورانه مشوره واخلئ:</strong> دا پیشه ورانه مالي مشوره نده. د کومو پانګه اچونو ژمنتیو کولو دمخه مهرباني وکړئ د تصدیق شوي مشیر سره مشوره وکړئ.</li>"
   },
   "hnd": {
     "currentAge": "حالیہ عمر",
@@ -767,17 +816,19 @@ const translations = {
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان",
     "explanationToggle": "📖 حساب کیویں کم کریندے نیں",
-    "explanationTitle1": "سادہ حساب - تن مراحل",
-    "explanationText1": "1. کل شراکتاں: اساں تمام سالاں وچ تواڈیاں ماہانہ شراکتاں نوں جمع کریندے ہاں، ہر سال اضافہ سمیت۔",
-    "explanationText2": "مثال: جے تسیں Rs. 5,000/ماہ توں شروع کرو تے 30 سالاں تک ہر سال 10% ودھاؤ، تاں تواڈیاں کل شراکتاں مہینہ بہ مہینہ حساب ہون گیاں۔",
-    "explanationTitle2": "فنڈ دی کارکردگی",
-    "explanationText3": "تواڈا پیسہ سالانہ 12.5% ودھدا اے (المیزان GOKP پنشن فنڈ دا طویل مدتی اوسط تخمینہ)۔",
-    "explanationText4": "ہر مہینہ، تواڈا بیلنس ودھدا اے: نواں بیلنس = (پرانے بیلنس + تواڈی شراکت) × 1.0104",
-    "explanationText5": "ایہ ریٹائرمنٹ تک تمام سالاں وچ ہر مہینہ ہوندا اے۔",
-    "explanationTitle3": "حتمی رقم",
-    "explanationText6": "تمام سالاں دی شراکتاں تے نمو دے بعد، تسیں اپنی امید قیمت گھنو گے - ایہ اوہ رقم اے جس تک تواڈا پیسہ ودھیا اے۔",
-    "explanationText7": "کل نمو = امید قیمت - کل شراکتاں",
-    "explanationText8": "ایہ حتمی رقم پھر تواڈے ریٹائرمنٹ سالاں دے لئی ماہانہ ادائیگیاں وچ تبدیل ہوندی اے۔"
+    "explanationIntroText": "ایہ پلانر تواڈی خوابیدہ ریٹائرمنٹ توں شاٹے کم کرن وچ مدد دے لئی ڈیزائن کیتا گیا اے۔ جے تواڈا اک خاص مقصد اے—جیویں کم چھڈن دے بعد ہر مہینہ {monthlyPayout} چاہندے ہو—تاں ایہ ٹول تسیں نوں بالکل ڈسدا اے کہ اج کتنا بچانا اے تاکہ ایہ ہو سکے۔<br><br>اتھے ڈسیا گیا اے کہ نظام تواڈی مستقبل دی دولت دا حساب کیویں لگاوندا اے تے تواڈی ماہانہ ادائیگی دا تعین کریندا اے۔",
+    "explanationTitle1": "1. اپنے مقصد دی منصوبہ بندی (ان پٹس)",
+    "explanationText1": "پہلے، تسیں اپنی زندگی تے امیداں دی بنیاد تے پیرامیٹرز سیٹ کرو:",
+    "explanationList1": "<li><strong>تواڈا ٹائم لائن:</strong> تسیں اپنی موجودہ عمر (مثلاً {currentAge}) تے جدوں تسیں ریٹائر ہونا چاہندے ہو (مثلاً {retireAge}) دی وضاحت کرو۔</li><li><strong>امید زندگی:</strong> تسیں انتخاب کرو کہ تسیں کتنی دیر تک زندہ رہن دی امید رکھدے ہو (مثلاً {deathAge} سال)، جو ایہ طے کریندا اے کہ تواڈی بچت کتنے مہینے چلنی چاہیدی اے ({payoutYears} سال)۔</li><li><strong>اضافہ بچت:</strong> تسیں اپنی آمدنی ودھن دے نال ہر سال اک فیصد (مثلاً {stepUpPercent}%) توں اپنی شراکت ودھان دی منصوبہ بندی کر سکدے ہو۔</li>",
+    "explanationTitle2": "2. پیسہ کیویں ودھدا اے (حساب)",
+    "explanationText2": "جب تسیں اپنی زندگی گزردے ہو، تاں ٹول دو اہم مراحل دے ذریعے تواڈے فنڈ دی پیشرفت دا حساب لگاوندا اے:",
+    "explanationList2": "<li><strong>کل شراکتاں:</strong> اساں {years} سالاں وچ تواڈی ہر ماہانہ ادائیگی نوں جمع کریندے ہاں، تواڈے سالانہ {stepUpPercent}% اضافے نوں مدنظر رکھدے ہوئے۔ اس مثال وچ، تواڈی کل جیب توں اخراجات {totalContributions} نیں۔</li><li><strong>فنڈ دی نمو:</strong> تواڈا پیسہ <strong>12.5% سالانہ واپسی</strong> دے تخمینے تے سرمایہ کاری کیتا جاندا اے۔ ہر مہینہ، مرکب دا \"جادو\" ہوندا اے: تواڈا نیا بیلنس تواڈی شراکت نوں پرانے بیلنس وچ شامل کرکے تے اس نوں نمو دے عنصر توں ضرب دے کے حساب کیتا جاندا اے۔</li>",
+    "explanationTitle3": "3. تواڈا حتمی نتیجہ (ادائیگی)",
+    "explanationText3": "تواڈے کم دے سالاں دے اختتام تے، تسیں اک \"امید قیمت\" باقی رہ جاندے ہو۔",
+    "explanationList3": "<li><strong>کل پوٹ:</strong> {retireAge} سال دی عمر تک، تواڈے فنڈ دے {finalPot} تک پہنچن دا تخمینہ لگایا گیا اے۔</li><li><strong>منافع:</strong> اس کل وچوں، {totalGrowth} سرمایہ کاری توں حاصل کردہ نمو اے۔</li><li><strong>تواڈی ماہانہ آمدنی:</strong> ایہ وڈی رقم پھر ماہانہ چیکاں وچ تقسیم ہوندی اے۔ تواڈیاں ترتیبات دی بنیاد تے، تسیں اپنی {payoutYears}-سالہ ادائیگی دی مدت دے لئی ہر مہینہ {monthlyPayout} گھنو گے۔</li>",
+    "explanationDisclaimerTitle": "ڈس کلیمر",
+    "explanationDisclaimerText": "<strong>ذاتی تحقیق تے غیر ذمہ داری دا نوٹس</strong><br>ایہ ٹول میری <strong>ذاتی تحقیق</strong> دا نتیجہ اے تے صرف تعلیمی تے وضاحتی مقاصد دے لئی اے۔",
+    "explanationDisclaimerList": "<li><strong>صرف تخمینے:</strong> ایہ اعداد و شمار تخمینی فنڈ دی کارکردگی تے مبنی نیں تے مستقبل دے نتائج دی ضمانت نیں۔</li><li><strong>کوئی ذمہ داری نیں:</strong> میں ان مالی نقصانات یا ان حساباں دی بنیاد تے کیتے گئے فیصلےآں دے لئی <strong>ذمہ دار نیں</strong>۔</li><li><strong>پیشہ ورانہ مشورہ لو:</strong> ایہ پیشہ ورانہ مالی مشورہ نیں۔ براہ کرم کوئی سرمایہ کاری دا عہد کرن توں پہلے اک سرٹیفائیڈ مشیر توں مشورہ کرو۔</li>"
   }
 };
 
@@ -1211,6 +1262,68 @@ function calculate() {
         `<div style="margin-bottom: 8px;">Your <b>Rs. ${Math.round(monthlyPayout).toLocaleString()}</b> monthly payout in ${retirementYear} will have the same buying power as <b>Rs. ${Math.round(realPower).toLocaleString()}</b> today.</div>` +
         `<div style="margin-bottom: 8px;">This means what costs <b>Rs. 100,000</b> today will cost approximately <b>Rs. ${futureCost.toLocaleString()}</b> in ${retirementYear} due to <b>${(inflation*100).toFixed(1)}%</b> average inflation.</div>` +
         `<div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #555; font-size: 0.85rem; color: #ccc;"><b>💡 Tip:</b> Use the "With Inflation" option in the Step-up tooltip to see how adjusting contributions for inflation affects your plan.</div>`;
+    
+    // Update explanation with dynamic values
+    updateExplanationContent(age, retireAge, deathAge, years, stepUp, monthlyContribution, totalContributions, finalPot, totalGrowth, monthlyPayout, payoutYears);
+}
+
+// Function to update explanation content with dynamic values
+function updateExplanationContent(age, retireAge, deathAge, years, stepUp, monthlyContribution, totalContributions, finalPot, totalGrowth, monthlyPayout, payoutYears) {
+    const stepUpPercent = (stepUp * 100).toFixed(1);
+    const formattedContribution = Math.round(monthlyContribution).toLocaleString();
+    const formattedTotalContributions = Math.round(totalContributions).toLocaleString();
+    const formattedFinalPot = Math.round(finalPot).toLocaleString();
+    const formattedTotalGrowth = Math.round(totalGrowth).toLocaleString();
+    const formattedMonthlyPayout = Math.round(monthlyPayout).toLocaleString();
+    
+    // Update intro text
+    const introEl = document.getElementById('explanationIntroText');
+    if (introEl) {
+        introEl.innerHTML = t('explanationIntroText').replace('{monthlyPayout}', `<span class="explanation-dynamic">Rs. ${formattedMonthlyPayout}</span>`);
+    }
+    
+    // Update section 1
+    const text1El = document.getElementById('explanationText1');
+    if (text1El) {
+        text1El.innerHTML = t('explanationText1');
+    }
+    const list1El = document.getElementById('explanationList1');
+    if (list1El) {
+        list1El.innerHTML = t('explanationList1')
+            .replace('{currentAge}', age)
+            .replace('{retireAge}', retireAge)
+            .replace('{deathAge}', deathAge)
+            .replace('{payoutYears}', payoutYears)
+            .replace('{stepUpPercent}', stepUpPercent);
+    }
+    
+    // Update section 2
+    const text2El = document.getElementById('explanationText2');
+    if (text2El) {
+        text2El.innerHTML = t('explanationText2');
+    }
+    const list2El = document.getElementById('explanationList2');
+    if (list2El) {
+        list2El.innerHTML = t('explanationList2')
+            .replace('{years}', years)
+            .replace('{stepUpPercent}', stepUpPercent)
+            .replace('{totalContributions}', `<span class="explanation-dynamic">Rs. ${formattedTotalContributions}</span>`);
+    }
+    
+    // Update section 3
+    const text3El = document.getElementById('explanationText3');
+    if (text3El) {
+        text3El.innerHTML = t('explanationText3');
+    }
+    const list3El = document.getElementById('explanationList3');
+    if (list3El) {
+        list3El.innerHTML = t('explanationList3')
+            .replace('{retireAge}', retireAge)
+            .replace('{finalPot}', `<span class="explanation-dynamic">Rs. ${formattedFinalPot}</span>`)
+            .replace('{totalGrowth}', `<span class="explanation-dynamic">Rs. ${formattedTotalGrowth}</span>`)
+            .replace('{monthlyPayout}', `<span class="explanation-dynamic">Rs. ${formattedMonthlyPayout}</span>`)
+            .replace('{payoutYears}', payoutYears);
+    }
 }
 
 // Sharing functions
@@ -1496,6 +1609,42 @@ function initializeTranslations() {
     const howToInvestLink = document.getElementById('howToInvestLink');
     if (howToInvestLink) {
         howToInvestLink.innerText = t('howToInvest');
+    }
+    
+    // Update explanation section (static text only, dynamic values updated in calculate())
+    const explanationMap = {
+        'explanationToggleText': 'explanationToggle',
+        'explanationTitle1': 'explanationTitle1',
+        'explanationText1': 'explanationText1',
+        'explanationTitle2': 'explanationTitle2',
+        'explanationText2': 'explanationText2',
+        'explanationTitle3': 'explanationTitle3',
+        'explanationText3': 'explanationText3',
+        'explanationDisclaimerTitle': 'explanationDisclaimerTitle',
+        'explanationDisclaimerText': 'explanationDisclaimerText'
+    };
+    
+    for (const [id, key] of Object.entries(explanationMap)) {
+        const el = document.getElementById(id);
+        if (el) {
+            if (id === 'explanationDisclaimerText') {
+                el.innerHTML = t(key);
+            } else {
+                el.innerText = t(key);
+            }
+        }
+    }
+    
+    // Handle HTML content for lists and disclaimer
+    const disclaimerListEl = document.getElementById('explanationDisclaimerList');
+    if (disclaimerListEl) {
+        disclaimerListEl.innerHTML = t('explanationDisclaimerList');
+    }
+    
+    // Update intro text with placeholder (will be updated with real values in calculate())
+    const introEl = document.getElementById('explanationIntroText');
+    if (introEl) {
+        introEl.innerHTML = t('explanationIntroText').replace('{monthlyPayout}', '<span class="explanation-dynamic">Rs. 0</span>');
     }
     
     // Explanation section
