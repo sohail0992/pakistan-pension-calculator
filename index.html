@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Pension Planner | Pakistan</title>
     <!-- Fonts for different languages - Load only when needed -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,7 @@
         :root { --meezan-green: #007565; --bg: #f0f4f3; --text: #333; }
         
         /* Language-specific fonts with font-display: swap for faster loading */
-        body { background: var(--bg); display: flex; justify-content: center; padding: 10px; color: var(--text); margin: 0; overflow-x: hidden; }
+        body { background: var(--bg); display: flex; justify-content: center; padding: 10px; color: var(--text); margin: 0; overflow-x: hidden; min-height: 100vh; }
         body.lang-en { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; direction: ltr; }
         body.lang-ur, body.lang-hnd { 
             font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
@@ -44,7 +44,7 @@
         body.lang-ur .slider-value, body.lang-hnd .slider-value, body.lang-ps .slider-value {
             font-family: 'Segoe UI', sans-serif;
         }
-        .card { background: white; padding: 1.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 1200px; }
+        .card { background: white; padding: 1.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 1200px; box-sizing: border-box; }
         .main-container { display: grid; grid-template-columns: 2.5fr auto 1fr; gap: 20px; position: relative; align-items: start; }
         .input-section { display: flex; flex-direction: column; }
         .results-section { display: flex; flex-direction: column; align-self: start; margin-top: 20px; }
@@ -103,9 +103,60 @@
         .share-btn-whatsapp { background: #25D366; }
         .share-btn-email { background: #007565; }
         .share-btn-twitter { background: #1DA1F2; }
+        .share-btn-copy { background: #6c757d; }
         @media (max-width: 968px) {
-            .main-container { grid-template-columns: 1fr; }
+            .main-container { grid-template-columns: 1fr; gap: 15px; }
             .column-divider { display: none; }
+            .results-section { margin-top: 0 !important; }
+        }
+        
+        /* Mobile-specific styles for iPhone and Android */
+        @media (max-width: 768px) {
+            body { padding: 5px; }
+            .card { padding: 1rem; border-radius: 15px; margin: 0; }
+            h1 { font-size: 1.2rem; margin-bottom: 0.8rem; padding-bottom: 6px; }
+            .input-row { grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px; }
+            .input-full { margin-bottom: 15px; }
+            label { font-size: 0.9rem; margin-bottom: 6px; }
+            input { padding: 14px; font-size: 16px; /* Prevents zoom on iOS */ }
+            .slider-container { flex-direction: column; gap: 8px; }
+            .slider-value { font-size: 1.1rem; }
+            .shareable-card { padding: 12px !important; margin-top: 15px !important; }
+            .share-buttons { gap: 10px; flex-wrap: wrap; justify-content: center; }
+            .share-btn { width: 50px; height: 50px; }
+            .share-btn svg { width: 22px; height: 22px; }
+            .stat-box { padding: 12px; margin-bottom: 8px; }
+            .stat-title { font-size: 0.75rem; }
+            .stat-value { font-size: 1.1rem; }
+            .stat-label { font-size: 0.8rem; }
+            .stat-number { font-size: 0.9rem; }
+            .footer { font-size: 0.65rem; padding-top: 12px; margin-top: 15px; }
+            .data-source { font-size: 0.6rem; line-height: 1.5; }
+            .buymeacoffee-btn img { height: 45px; width: 180px; }
+            .language-switcher { right: 10px; bottom: 10px; }
+            .language-icon-btn { width: 50px; height: 50px; }
+            .language-icon-btn svg { width: 24px; height: 24px; }
+            .tooltip { width: 90vw; max-width: 300px; font-size: 0.75rem; padding: 10px; }
+        }
+        
+        /* Small mobile devices (iPhone SE, small Android) */
+        @media (max-width: 375px) {
+            body { padding: 3px; }
+            .card { padding: 0.8rem; }
+            h1 { font-size: 1.1rem; }
+            .input-row { gap: 12px; margin-bottom: 12px; }
+            input { padding: 12px; }
+            .shareable-card { padding: 10px !important; }
+            .stat-box { padding: 10px; }
+            .footer { font-size: 0.6rem; }
+        }
+        
+        /* Landscape mobile orientation */
+        @media (max-width: 968px) and (orientation: landscape) {
+            .card { padding: 1rem; }
+            h1 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+            .input-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .results-section { margin-top: 0 !important; }
         }
         h1 { color: var(--meezan-green); text-align: center; margin-bottom: 1rem; font-size: 1.4rem; border-bottom: 2px solid #eee; padding-bottom: 8px; }
         .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -362,6 +413,11 @@
                             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                         </svg>
                     </button>
+                    <button class="share-btn share-btn-copy" onclick="copyImage()" id="btnCopyImage" title="Copy Image">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                        </svg>
+                    </button>
                 </div>
                 <div style="margin-top: 15px; text-align: center;">
                     <a href="https://buymeacoffee.com/msohail01" target="_blank" class="buymeacoffee-btn">
@@ -377,6 +433,9 @@
         <div class="data-source">
             Inflation: <a href="https://www.sbp.org.pk/ecodata/index2.asp" target="_blank">State Bank of Pakistan</a> (9% avg)<span class="footer-separator">•</span>
             Life Expectancy: <a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=PK" target="_blank">World Bank</a> (~68 years)
+        </div>
+        <div style="margin-top: 10px;">
+            <a href="https://sohail0992.github.io/pakistan-pension-calculator/" target="_blank" id="websiteLink">Visit Website</a>
         </div>
     </div>
 </div>
@@ -442,6 +501,7 @@ const translations = {
     "shareOnWhatsApp": "Share on WhatsApp",
     "shareViaEmail": "Share via Email",
     "shareOnTwitter": "Share on Twitter",
+    "copyImage": "Copy Image",
     "dataAligned": "Data aligned with",
     "viewPerformance": "View Performance",
     "inflationLabel": "Inflation:",
@@ -463,6 +523,7 @@ const translations = {
     "emailImageNote": "Image attached: pension-plan.png",
     "hashtags": "#PensionPlanner",
     "footerDataAligned": "Data aligned with",
+    "visitWebsite": "Visit Website",
     "footerViewPerformance": "View Performance",
     "pageTitle": "Pension Planner",
     "languageSwitcherTitle": "Language"
@@ -492,6 +553,7 @@ const translations = {
     "shareOnWhatsApp": "واٹس ایپ پر شیئر کریں",
     "shareViaEmail": "ای میل کے ذریعے شیئر کریں",
     "shareOnTwitter": "ٹویٹر پر شیئر کریں",
+    "copyImage": "تصویر کاپی کریں",
     "dataAligned": "ڈیٹا کے ساتھ منسلک",
     "viewPerformance": "کارکردگی دیکھیں",
     "inflationLabel": "افراط زر:",
@@ -513,6 +575,7 @@ const translations = {
     "emailImageNote": "تصویر منسلک: pension-plan.png",
     "hashtags": "#پنشن_پلانر",
     "footerDataAligned": "ڈیٹا کے ساتھ منسلک",
+    "visitWebsite": "ویب سائٹ ملاحظہ کریں",
     "footerViewPerformance": "کارکردگی دیکھیں",
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان"
@@ -542,6 +605,7 @@ const translations = {
     "shareOnWhatsApp": "په واتساپ کې شریک کړئ",
     "shareViaEmail": "په بریښنالیک کې شریک کړئ",
     "shareOnTwitter": "په ټویټر کې شریک کړئ",
+    "copyImage": "انځور کاپي کړئ",
     "dataAligned": "د ډیټا سره تړل شوی",
     "viewPerformance": "کارکردګۍ وګورئ",
     "inflationLabel": "تورم:",
@@ -563,6 +627,7 @@ const translations = {
     "emailImageNote": "انځور ضمیمه: pension-plan.png",
     "hashtags": "#د_تقاعد_پلان",
     "footerDataAligned": "د ډیټا سره تړل شوی",
+    "visitWebsite": "ویب پاڼه وګورئ",
     "footerViewPerformance": "کارکردګۍ وګورئ",
     "pageTitle": "د تقاعد پلان جوړونکی",
     "languageSwitcherTitle": "ژبه"
@@ -592,6 +657,7 @@ const translations = {
     "shareOnWhatsApp": "واٹس ایپ تے شیئر کرو",
     "shareViaEmail": "ای میل دے ذریعے شیئر کرو",
     "shareOnTwitter": "ٹویٹر تے شیئر کرو",
+    "copyImage": "تصویر کاپی کرو",
     "dataAligned": "ڈیٹا دے نال منسلک",
     "viewPerformance": "کارکردگی ڈیکھو",
     "inflationLabel": "افراط زر:",
@@ -614,6 +680,7 @@ const translations = {
     "hashtags": "#پنشن_پلانر",
     "footerDataAligned": "ڈیٹا دے نال منسلک",
     "footerViewPerformance": "کارکردگی ڈیکھو",
+    "visitWebsite": "ویب سائٹ ڈیکھو",
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان"
   }
@@ -1061,23 +1128,155 @@ function getShareText() {
            `${t('hashtags')}`;
 }
 
+// Function to capture shareable card as image
+async function captureShareableCard() {
+    const shareableCard = document.querySelector('.shareable-card');
+    if (!shareableCard) {
+        console.error('Shareable card not found');
+        return null;
+    }
+    
+    try {
+        const canvas = await html2canvas(shareableCard, {
+            backgroundColor: '#fff9c4',
+            scale: 2, // Higher quality
+            logging: false,
+            useCORS: true
+        });
+        
+        return canvas.toDataURL('image/png');
+    } catch (error) {
+        console.error('Error capturing image:', error);
+        return null;
+    }
+}
+
+// Function to download image
+function downloadImage(dataUrl, filename) {
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = dataUrl;
+    link.click();
+}
+
+// Function to share image via Web Share API (if available)
+async function shareImage(dataUrl, includeText = true) {
+    if (navigator.share) {
+        try {
+            // Convert data URL to blob
+            const response = await fetch(dataUrl);
+            const blob = await response.blob();
+            const file = new File([blob], 'pension-plan.png', { type: 'image/png' });
+            
+            // Try to share with file - don't check canShare first, just try it
+            const shareData = {
+                files: [file]
+            };
+            
+            if (includeText) {
+                shareData.title = t('myPensionPlan');
+                shareData.text = t('sharePlanTitle') + ' ' + window.location.href;
+            }
+            
+            await navigator.share(shareData);
+            return true;
+        } catch (error) {
+            // User cancelled or error occurred
+            if (error.name === 'AbortError' || error.name === 'NotAllowedError') {
+                // User cancelled - don't show error
+                return false;
+            }
+            // Other errors - log but don't show to user
+            console.log('Web Share API not available or failed:', error.name);
+            return false;
+        }
+    }
+    return false;
+}
+
 function shareOnWhatsApp() {
     const text = getShareText();
     const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
 }
 
-function shareViaEmail() {
-    const subject = t('emailSubject');
-    const body = getShareText();
-    const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = url;
+async function shareViaEmail() {
+    const imageDataUrl = await captureShareableCard();
+    if (!imageDataUrl) {
+        alert('Failed to generate image. Please try again.');
+        return;
+    }
+    
+    // Try Web Share API first (works on mobile devices - shares image directly)
+    const shared = await shareImage(imageDataUrl);
+    if (shared) {
+        // Successfully shared via Web Share API
+        return;
+    }
+    
+    // For desktop/fallback: Download image and open email client
+    downloadImage(imageDataUrl, 'pension-plan.png');
+    
+    // Open email client with message
+    setTimeout(() => {
+        const subject = t('emailSubject');
+        const body = t('sharePlanTitle') + '\n\n' + window.location.href + '\n\n' + t('emailImageNote');
+        const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = url;
+        
+        // Show message to user
+        alert('Image downloaded! Please attach "pension-plan.png" to your email.');
+    }, 300);
 }
 
 function shareOnTwitter() {
     const text = getShareText();
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
+}
+
+// Function to copy image to clipboard
+async function copyImage() {
+    const imageDataUrl = await captureShareableCard();
+    if (!imageDataUrl) {
+        alert('Failed to generate image. Please try again.');
+        return;
+    }
+    
+    try {
+        // Convert data URL to blob
+        const response = await fetch(imageDataUrl);
+        const blob = await response.blob();
+        
+        // Use Clipboard API to copy image
+        if (navigator.clipboard && navigator.clipboard.write) {
+            const item = new ClipboardItem({ 'image/png': blob });
+            await navigator.clipboard.write([item]);
+            
+            // Show success message
+            const btn = document.getElementById('btnCopyImage');
+            const originalTitle = btn.getAttribute('title');
+            btn.setAttribute('title', 'Image copied!');
+            setTimeout(() => {
+                btn.setAttribute('title', originalTitle);
+            }, 2000);
+            
+            // Visual feedback
+            btn.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                btn.style.transform = '';
+            }, 200);
+        } else {
+            // Fallback: Download image
+            downloadImage(imageDataUrl, 'pension-plan.png');
+            alert('Image downloaded! (Copy to clipboard not supported in this browser)');
+        }
+    } catch (error) {
+        console.error('Error copying image:', error);
+        // Fallback: Download image
+        downloadImage(imageDataUrl, 'pension-plan.png');
+        alert('Image downloaded! (Copy to clipboard failed)');
+    }
 }
 
 // Initialize all text from translations
@@ -1175,7 +1374,8 @@ function initializeTranslations() {
     const shareBtnMap = {
         'btnShareWhatsApp': 'shareOnWhatsApp',
         'btnShareEmail': 'shareViaEmail',
-        'btnShareTwitter': 'shareOnTwitter'
+        'btnShareTwitter': 'shareOnTwitter',
+        'btnCopyImage': 'copyImage'
     };
     
     for (const [id, key] of Object.entries(shareBtnMap)) {
@@ -1186,6 +1386,12 @@ function initializeTranslations() {
     // Footer
     const footerLinks = document.querySelectorAll('.footer a');
     // Footer text is handled separately in HTML structure
+    
+    // Update website link text
+    const websiteLink = document.getElementById('websiteLink');
+    if (websiteLink) {
+        websiteLink.innerText = t('visitWebsite');
+    }
 }
 
 // Initialize fields on load
