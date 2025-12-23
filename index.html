@@ -367,42 +367,23 @@
         </button>
         <div class="explanation-content" id="explanationContent" style="display: none;">
             <div class="explanation-section">
-                <h3 id="explanationTitle1">Two Calculation Modes</h3>
-                <p id="explanationText1"><strong>Mode 1 - Contribution-Based:</strong> Enter your monthly contribution amount. The calculator determines how much you'll receive monthly after retirement based on your savings and fund returns.</p>
-                <p id="explanationText2"><strong>Mode 2 - Payout-Based:</strong> Enter your desired monthly retirement income. The calculator determines how much you need to save monthly to achieve that goal.</p>
+                <h3 id="explanationTitle1">Simple Math - Three Steps</h3>
+                <p id="explanationText1"><strong>1. Total Contributions:</strong> We add up all your monthly contributions over the years, including the step-up increase each year.</p>
+                <p id="explanationText2"><strong>Example:</strong> If you start with Rs. 5,000/month and increase by 10% each year for 30 years, your total contributions will be calculated month by month.</p>
             </div>
             
             <div class="explanation-section">
-                <h3 id="explanationTitle2">Step-Up Contributions</h3>
-                <p id="explanationText3">Your monthly contribution increases by the step-up percentage each year. For example, with a 10% step-up and Rs. 5,000 initial contribution:</p>
-                <ul id="explanationList1"></ul>
-    </div>
-
-            <div class="explanation-section">
-                <h3 id="explanationTitle3">Compound Growth</h3>
-                <p id="explanationText4">Your contributions grow with compound interest at the fund's return rate (12.5% annually, or ~1.04% monthly). Each month:</p>
-                <p class="explanation-formula" id="explanationFormula1"></p>
-                <p id="explanationText5">This compounds over all years until retirement, significantly increasing your final pot.</p>
-</div>
-            
-            <div class="explanation-section">
-                <h3 id="explanationTitle4">Annuity Formula for Payouts</h3>
-                <p id="explanationText6">After retirement, your pot is converted to monthly payouts using the annuity formula:</p>
-                <p class="explanation-formula" id="explanationFormula2"></p>
-                <p id="explanationText7">This ensures your pot lasts exactly for the payout period (from retirement age to life expectancy).</p>
+                <h3 id="explanationTitle2">Fund Performance</h3>
+                <p id="explanationText3">Your money grows at <strong>12.5% per year</strong> (Meezan GOKP Pension Fund estimated long-term average).</p>
+                <p id="explanationText4">Each month, your balance grows: <strong>New Balance = (Old Balance + Your Contribution) × 1.0104</strong></p>
+                <p id="explanationText5">This happens every month for all the years until retirement.</p>
             </div>
             
             <div class="explanation-section">
-                <h3 id="explanationTitle5">Solving for Contribution (Binary Search)</h3>
-                <p id="explanationText8">When you enter a desired payout, the calculator uses binary search to find the exact monthly contribution needed:</p>
-                <ol id="explanationList2"></ol>
-            </div>
-            
-            <div class="explanation-section">
-                <h3 id="explanationTitle6">Inflation Impact</h3>
-                <p id="explanationText9">Inflation reduces purchasing power over time. The calculator shows:</p>
-                <p class="explanation-formula" id="explanationFormula3"></p>
-                <p id="explanationText10">This helps you understand what your retirement income will actually buy in today's terms.</p>
+                <h3 id="explanationTitle3">Final Amount</h3>
+                <p id="explanationText6">After all years of contributions and growth, you get your <strong>Projected Value</strong> - this is how much your money has grown to.</p>
+                <p id="explanationText7"><strong>Total Growth = Projected Value - Total Contributions</strong></p>
+                <p id="explanationText8">This final amount is then converted into monthly payouts for your retirement years.</p>
             </div>
         </div>
     </div>
@@ -591,27 +572,17 @@ const translations = {
     "pageTitle": "Pension Planner",
     "languageSwitcherTitle": "Language",
     "explanationToggle": "📖 How Calculations Work",
-    "explanationTitle1": "Two Calculation Modes",
-    "explanationText1": "Mode 1 - Contribution-Based: Enter your monthly contribution amount. The calculator determines how much you'll receive monthly after retirement based on your savings and fund returns.",
-    "explanationText2": "Mode 2 - Payout-Based: Enter your desired monthly retirement income. The calculator determines how much you need to save monthly to achieve that goal.",
-    "explanationTitle2": "Step-Up Contributions",
-    "explanationText3": "Your monthly contribution increases by the step-up percentage each year. For example, with a 10% step-up and Rs. 5,000 initial contribution:",
-    "explanationList1": "<li>Year 1: Rs. 5,000/month</li><li>Year 2: Rs. 5,500/month (10% increase)</li><li>Year 3: Rs. 6,050/month (10% increase)</li><li>And so on...</li>",
-    "explanationTitle3": "Compound Growth",
-    "explanationText4": "Your contributions grow with compound interest at the fund's return rate (12.5% annually, or ~1.04% monthly). Each month:",
-    "explanationFormula1": "New Balance = (Previous Balance + Monthly Contribution) × (1 + Monthly Return Rate)",
-    "explanationText5": "This compounds over all years until retirement, significantly increasing your final pot.",
-    "explanationTitle4": "Annuity Formula for Payouts",
-    "explanationText6": "After retirement, your pot is converted to monthly payouts using the annuity formula:",
-    "explanationFormula2": "Monthly Payout = Pot × Monthly Return Rate / (1 - (1 + Monthly Return Rate)^(-Number of Months))",
-    "explanationText7": "This ensures your pot lasts exactly for the payout period (from retirement age to life expectancy).",
-    "explanationTitle5": "Solving for Contribution (Binary Search)",
-    "explanationText8": "When you enter a desired payout, the calculator uses binary search to find the exact monthly contribution needed:",
-    "explanationList2": "<li>Start with a range (0 to required pot amount)</li><li>Test the midpoint contribution amount</li><li>Calculate if it produces enough growth to reach the required pot</li><li>Narrow the range and repeat until the exact amount is found</li>",
-    "explanationTitle6": "Inflation Impact",
-    "explanationText9": "Inflation reduces purchasing power over time. The calculator shows:",
-    "explanationFormula3": "Real Purchasing Power = Future Amount / (1 + Inflation Rate)^Years",
-    "explanationText10": "This helps you understand what your retirement income will actually buy in today's terms."
+    "explanationTitle1": "Simple Math - Three Steps",
+    "explanationText1": "1. Total Contributions: We add up all your monthly contributions over the years, including the step-up increase each year.",
+    "explanationText2": "Example: If you start with Rs. 5,000/month and increase by 10% each year for 30 years, your total contributions will be calculated month by month.",
+    "explanationTitle2": "Fund Performance",
+    "explanationText3": "Your money grows at 12.5% per year (Meezan GOKP Pension Fund estimated long-term average).",
+    "explanationText4": "Each month, your balance grows: New Balance = (Old Balance + Your Contribution) × 1.0104",
+    "explanationText5": "This happens every month for all the years until retirement.",
+    "explanationTitle3": "Final Amount",
+    "explanationText6": "After all years of contributions and growth, you get your Projected Value - this is how much your money has grown to.",
+    "explanationText7": "Total Growth = Projected Value - Total Contributions",
+    "explanationText8": "This final amount is then converted into monthly payouts for your retirement years."
   },
   "ur": {
     "currentAge": "موجودہ عمر",
@@ -666,27 +637,17 @@ const translations = {
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان",
     "explanationToggle": "📖 حساب کیسے کام کرتے ہیں",
-    "explanationTitle1": "دو حساب کے طریقے",
-    "explanationText1": "طریقہ 1 - شراکت پر مبنی: اپنی ماہانہ شراکت کی رقم درج کریں۔ کیلکولیٹر آپ کی بچت اور فنڈ کی واپسی کی بنیاد پر ریٹائرمنٹ کے بعد آپ کو ماہانہ کتنا ملے گا اس کا تعین کرتا ہے۔",
-    "explanationText2": "طریقہ 2 - ادائیگی پر مبنی: اپنی مطلوبہ ماہانہ ریٹائرمنٹ آمدنی درج کریں۔ کیلکولیٹر اس مقصد کو حاصل کرنے کے لیے آپ کو ماہانہ کتنا بچانا ہوگا اس کا تعین کرتا ہے۔",
-    "explanationTitle2": "اضافہ شراکتیں",
-    "explanationText3": "آپ کی ماہانہ شراکت ہر سال اضافہ فیصد سے بڑھتی ہے۔ مثال کے طور پر، 10% اضافہ اور Rs. 5,000 ابتدائی شراکت کے ساتھ:",
-    "explanationList1": "<li>سال 1: Rs. 5,000/ماہ</li><li>سال 2: Rs. 5,500/ماہ (10% اضافہ)</li><li>سال 3: Rs. 6,050/ماہ (10% اضافہ)</li><li>اور اسی طرح...</li>",
-    "explanationTitle3": "مرکب نمو",
-    "explanationText4": "آپ کی شراکتیں فنڈ کی واپسی کی شرح (سالانہ 12.5%، یا ماہانہ ~1.04%) پر مرکب سود کے ساتھ بڑھتی ہیں۔ ہر مہینہ:",
-    "explanationFormula1": "نیا بیلنس = (پچھلا بیلنس + ماہانہ شراکت) × (1 + ماہانہ واپسی کی شرح)",
-    "explanationText5": "یہ ریٹائرمنٹ تک تمام سالوں میں مرکب ہوتا ہے، آپ کے حتمی پوٹ میں نمایاں اضافہ کرتا ہے۔",
-    "explanationTitle4": "ادائیگیوں کے لیے سالانہ فارمولا",
-    "explanationText6": "ریٹائرمنٹ کے بعد، آپ کا پوٹ سالانہ فارمولا کا استعمال کرتے ہوئے ماہانہ ادائیگیوں میں تبدیل ہوتا ہے:",
-    "explanationFormula2": "ماہانہ ادائیگی = پوٹ × ماہانہ واپسی کی شرح / (1 - (1 + ماہانہ واپسی کی شرح)^(-مہینوں کی تعداد))",
-    "explanationText7": "یہ یقینی بناتا ہے کہ آپ کا پوٹ ادائیگی کی مدت (ریٹائرمنٹ کی عمر سے زندگی کی توقع تک) کے لیے بالکل کافی ہے۔",
-    "explanationTitle5": "شراکت کا حل (بائنری سرچ)",
-    "explanationText8": "جب آپ مطلوبہ ادائیگی درج کرتے ہیں، تو کیلکولیٹر درکار ماہانہ شراکت تلاش کرنے کے لیے بائنری سرچ استعمال کرتا ہے:",
-    "explanationList2": "<li>ایک رینج (0 سے درکار پوٹ کی رقم) کے ساتھ شروع کریں</li><li>درمیانی نقطہ شراکت کی رقم کو ٹیسٹ کریں</li><li>حساب کریں کہ آیا یہ درکار پوٹ تک پہنچنے کے لیے کافی نمو پیدا کرتا ہے</li><li>رینج کو محدود کریں اور عین رقم ملنے تک دہرائیں</li>",
-    "explanationTitle6": "افراط زر کا اثر",
-    "explanationText9": "افراط زر وقت کے ساتھ خریداری کی طاقت کو کم کرتا ہے۔ کیلکولیٹر دکھاتا ہے:",
-    "explanationFormula3": "حقیقی خریداری کی طاقت = مستقبل کی رقم / (1 + افراط زر کی شرح)^سال",
-    "explanationText10": "یہ آپ کو سمجھنے میں مدد کرتا ہے کہ آپ کی ریٹائرمنٹ آمدنی آج کی شرائط میں اصل میں کیا خریدے گی۔"
+    "explanationTitle1": "سادہ حساب - تین مراحل",
+    "explanationText1": "1. کل شراکتیں: ہم تمام سالوں میں آپ کی ماہانہ شراکتوں کو جمع کرتے ہیں، بشمول ہر سال اضافہ۔",
+    "explanationText2": "مثال: اگر آپ Rs. 5,000/ماہ سے شروع کریں اور 30 سال تک ہر سال 10% بڑھائیں، تو آپ کی کل شراکتیں مہینہ بہ مہینہ حساب کی جائیں گی۔",
+    "explanationTitle2": "فنڈ کی کارکردگی",
+    "explanationText3": "آپ کا پیسہ سالانہ 12.5% بڑھتا ہے (المیزان GOKP پنشن فنڈ کا طویل مدتی اوسط تخمینہ)۔",
+    "explanationText4": "ہر مہینہ، آپ کا بیلنس بڑھتا ہے: نیا بیلنس = (پرانے بیلنس + آپ کی شراکت) × 1.0104",
+    "explanationText5": "یہ ریٹائرمنٹ تک تمام سالوں میں ہر مہینہ ہوتا ہے۔",
+    "explanationTitle3": "حتمی رقم",
+    "explanationText6": "تمام سالوں کی شراکتوں اور نمو کے بعد، آپ کو اپنی متوقع قیمت ملتی ہے - یہ وہ رقم ہے جس تک آپ کا پیسہ بڑھا ہے۔",
+    "explanationText7": "کل نمو = متوقع قیمت - کل شراکتیں",
+    "explanationText8": "یہ حتمی رقم پھر آپ کے ریٹائرمنٹ سالوں کے لیے ماہانہ ادائیگیوں میں تبدیل ہوتی ہے۔"
   },
   "ps": {
     "currentAge": "اوسنی عمر",
@@ -816,27 +777,17 @@ const translations = {
     "pageTitle": "پنشن پلانر",
     "languageSwitcherTitle": "زبان",
     "explanationToggle": "📖 حساب کیویں کم کریندے نیں",
-    "explanationTitle1": "دو حساب دے طریقے",
-    "explanationText1": "طریقہ 1 - شراکت تے مبنی: اپنی ماہانہ شراکت دی رقم درج کرو۔ کیلکولیٹر تواڈی بچت تے فنڈ دی واپسی دی بنیاد تے ریٹائرمنٹ دے بعد تسیں ماہانہ کتنا گھنو گے ایہ طے کریندا اے۔",
-    "explanationText2": "طریقہ 2 - ادائیگی تے مبنی: اپنی مطلوبہ ماہانہ ریٹائرمنٹ آمدنی درج کرو۔ کیلکولیٹر اس مقصد نوں حاصل کرن دے لئی تسیں نوں ماہانہ کتنا بچانا ہووے گا ایہ طے کریندا اے۔",
-    "explanationTitle2": "اضافہ شراکتاں",
-    "explanationText3": "تواڈی ماہانہ شراکت ہر سال اضافہ فیصد توں ودھدی اے۔ مثال دے طور تے، 10% اضافہ تے Rs. 5,000 ابتدائی شراکت دے نال:",
-    "explanationList1": "<li>سال 1: Rs. 5,000/ماہ</li><li>سال 2: Rs. 5,500/ماہ (10% اضافہ)</li><li>سال 3: Rs. 6,050/ماہ (10% اضافہ)</li><li>تے اسی طرح...</li>",
-    "explanationTitle3": "مرکب نمو",
-    "explanationText4": "تواڈیاں شراکتاں فنڈ دی واپسی دی شرح (سالانہ 12.5%، یا ماہانہ ~1.04%) تے مرکب سود دے نال ودھدیاں نیں۔ ہر مہینہ:",
-    "explanationFormula1": "نواں بیلنس = (پچھلا بیلنس + ماہانہ شراکت) × (1 + ماہانہ واپسی دی شرح)",
-    "explanationText5": "ایہ ریٹائرمنٹ تک تمام سالاں وچ مرکب ہوندا اے، تواڈے حتمی پوٹ وچ نمایاں اضافہ کریندا اے۔",
-    "explanationTitle4": "ادائیگیاں دے لئی سالانہ فارمولا",
-    "explanationText6": "ریٹائرمنٹ دے بعد، تواڈا پوٹ سالانہ فارمولا استعمال کریندے ہوئے ماہانہ ادائیگیاں وچ تبدیل ہوندا اے:",
-    "explanationFormula2": "ماہانہ ادائیگی = پوٹ × ماہانہ واپسی دی شرح / (1 - (1 + ماہانہ واپسی دی شرح)^(-مہیناں دی تعداد))",
-    "explanationText7": "ایہ یقینی بناوندا اے کہ تواڈا پوٹ ادائیگی دی مدت (ریٹائرمنٹ دی عمر توں زندگی دی توقع تک) دے لئی بالکل کافی اے۔",
-    "explanationTitle5": "شراکت دا حل (بائنری سرچ)",
-    "explanationText8": "جب تسیں مطلوبہ ادائیگی درج کرو، تاں کیلکولیٹر درکار ماہانہ شراکت تلاش کرن دے لئی بائنری سرچ استعمال کریندا اے:",
-    "explanationList2": "<li>اک رینج (0 توں درکار پوٹ دی رقم) دے نال شروع کرو</li><li>درمیانی نقطہ شراکت دی رقم نوں ٹیسٹ کرو</li><li>حساب کرو کہ آیا ایہ درکار پوٹ تک پہنچن دے لئی کافی نمو پیدا کریندا اے</li><li>رینج نوں محدود کرو تے عین رقم ملن تک دہراؤ</li>",
-    "explanationTitle6": "افراط زر دا اثر",
-    "explanationText9": "افراط زر وقت دے نال خریداری دی طاقت نوں گھٹ کریندا اے۔ کیلکولیٹر ڈکھاوندا اے:",
-    "explanationFormula3": "حقیقی خریداری دی طاقت = مستقبل دی رقم / (1 + افراط زر دی شرح)^سال",
-    "explanationText10": "ایہ تواڈی مدد کریندا اے کہ تواڈی ریٹائرمنٹ آمدنی اج دی شرائط وچ اصل وچ کیا خریدے گی۔"
+    "explanationTitle1": "سادہ حساب - تن مراحل",
+    "explanationText1": "1. کل شراکتاں: اساں تمام سالاں وچ تواڈیاں ماہانہ شراکتاں نوں جمع کریندے ہاں، ہر سال اضافہ سمیت۔",
+    "explanationText2": "مثال: جے تسیں Rs. 5,000/ماہ توں شروع کرو تے 30 سالاں تک ہر سال 10% ودھاؤ، تاں تواڈیاں کل شراکتاں مہینہ بہ مہینہ حساب ہون گیاں۔",
+    "explanationTitle2": "فنڈ دی کارکردگی",
+    "explanationText3": "تواڈا پیسہ سالانہ 12.5% ودھدا اے (المیزان GOKP پنشن فنڈ دا طویل مدتی اوسط تخمینہ)۔",
+    "explanationText4": "ہر مہینہ، تواڈا بیلنس ودھدا اے: نواں بیلنس = (پرانے بیلنس + تواڈی شراکت) × 1.0104",
+    "explanationText5": "ایہ ریٹائرمنٹ تک تمام سالاں وچ ہر مہینہ ہوندا اے۔",
+    "explanationTitle3": "حتمی رقم",
+    "explanationText6": "تمام سالاں دی شراکتاں تے نمو دے بعد، تسیں اپنی امید قیمت گھنو گے - ایہ اوہ رقم اے جس تک تواڈا پیسہ ودھیا اے۔",
+    "explanationText7": "کل نمو = امید قیمت - کل شراکتاں",
+    "explanationText8": "ایہ حتمی رقم پھر تواڈے ریٹائرمنٹ سالاں دے لئی ماہانہ ادائیگیاں وچ تبدیل ہوندی اے۔"
   }
 };
 
@@ -1582,25 +1533,6 @@ function initializeTranslations() {
         if (el) el.innerText = t(key);
     }
     
-    // Handle list elements separately
-    const list1 = document.getElementById('explanationList1');
-    if (list1) list1.innerHTML = t('explanationList1');
-    const list2 = document.getElementById('explanationList2');
-    if (list2) list2.innerHTML = t('explanationList2');
-    
-    // Formula elements (use innerHTML to preserve formatting)
-    const formulaMap = {
-        'explanationFormula1': 'explanationFormula1',
-        'explanationFormula2': 'explanationFormula2',
-        'explanationFormula3': 'explanationFormula3'
-    };
-    
-    for (const [id, key] of Object.entries(formulaMap)) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.innerHTML = '<strong>' + t(key) + '</strong>';
-        }
-    }
 }
 
 // Initialize fields on load
