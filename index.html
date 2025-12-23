@@ -1579,14 +1579,14 @@ function initializeTranslations() {
     
     for (const [id, key] of Object.entries(explanationMap)) {
         const el = document.getElementById(id);
-        if (el) {
-            if (id === 'explanationList1' || id === 'explanationList2') {
-                el.innerHTML = t(key);
-            } else {
-                el.innerText = t(key);
-            }
-        }
+        if (el) el.innerText = t(key);
     }
+    
+    // Handle list elements separately
+    const list1 = document.getElementById('explanationList1');
+    if (list1) list1.innerHTML = t('explanationList1');
+    const list2 = document.getElementById('explanationList2');
+    if (list2) list2.innerHTML = t('explanationList2');
     
     // Formula elements (use innerHTML to preserve formatting)
     const formulaMap = {
