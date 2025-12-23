@@ -1612,7 +1612,7 @@ function initializeTranslations() {
     }
     
     // Update explanation section (static text only, dynamic values updated in calculate())
-    const explanationMap = {
+    const explanationStaticMap = {
         'explanationToggleText': 'explanationToggle',
         'explanationTitle1': 'explanationTitle1',
         'explanationText1': 'explanationText1',
@@ -1624,7 +1624,7 @@ function initializeTranslations() {
         'explanationDisclaimerText': 'explanationDisclaimerText'
     };
     
-    for (const [id, key] of Object.entries(explanationMap)) {
+    for (const [id, key] of Object.entries(explanationStaticMap)) {
         const el = document.getElementById(id);
         if (el) {
             if (id === 'explanationDisclaimerText') {
