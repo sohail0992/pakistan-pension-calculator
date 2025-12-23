@@ -161,6 +161,90 @@
         .stat-label { font-size: 0.85rem; color: #666; }
         .stat-number { font-size: 1rem; font-weight: 600; color: var(--meezan-green); }
         .inflation-warning { color: #d35400; font-size: 0.75rem; padding: 8px 12px; background: #fff3e0; border-radius: 6px; margin-top: 10px; line-height: 1.4; border-left: 3px solid #d35400; }
+        
+        /* Explanation Section */
+        .explanation-toggle {
+            width: 100%;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 2px solid var(--meezan-green);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--meezan-green);
+            transition: all 0.3s;
+            margin-bottom: 0;
+        }
+        .explanation-toggle:hover {
+            background: #e6f4f1;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .explanation-toggle span:last-child {
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+        .explanation-toggle.active span:last-child {
+            transform: rotate(180deg);
+        }
+        .explanation-content {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+            margin-top: 0;
+        }
+        .explanation-section {
+            margin-bottom: 20px;
+        }
+        .explanation-section:last-child {
+            margin-bottom: 0;
+        }
+        .explanation-section h3 {
+            color: var(--meezan-green);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+        .explanation-section p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .explanation-section ul, .explanation-section ol {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #555;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .explanation-section li {
+            margin-bottom: 5px;
+        }
+        .explanation-formula {
+            background: #fff;
+            padding: 12px;
+            border-left: 4px solid var(--meezan-green);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        body[dir="rtl"] .explanation-section ul, body[dir="rtl"] .explanation-section ol {
+            margin-left: 0;
+            margin-right: 20px;
+        }
+        body[dir="rtl"] .explanation-formula {
+            border-left: none;
+            border-right: 4px solid var(--meezan-green);
+        }
     </style>
 </head>
 <body>
@@ -272,6 +356,54 @@
         <div>
             <label id="labelMonthlyContribution"></label>
             <input type="text" id="monthlyContribution" value="5,000" onkeypress="return validateIntegerInput(event)" oninput="formatMoneyInput(this); calculate(); updateStepUpTooltip()" onpaste="setTimeout(() => formatMoneyInput(this), 0)" inputmode="numeric">
+        </div>
+    </div>
+
+    <!-- Calculation Explanation Section -->
+    <div class="input-full" style="margin-top: 20px;">
+        <button type="button" class="explanation-toggle" onclick="toggleExplanation()" id="explanationToggle">
+            <span id="explanationToggleText">📖 How Calculations Work</span>
+            <span id="explanationToggleIcon">▼</span>
+        </button>
+        <div class="explanation-content" id="explanationContent" style="display: none;">
+            <div class="explanation-section">
+                <h3 id="explanationTitle1">Two Calculation Modes</h3>
+                <p id="explanationText1"><strong>Mode 1 - Contribution-Based:</strong> Enter your monthly contribution amount. The calculator determines how much you'll receive monthly after retirement based on your savings and fund returns.</p>
+                <p id="explanationText2"><strong>Mode 2 - Payout-Based:</strong> Enter your desired monthly retirement income. The calculator determines how much you need to save monthly to achieve that goal.</p>
+            </div>
+            
+            <div class="explanation-section">
+                <h3 id="explanationTitle2">Step-Up Contributions</h3>
+                <p id="explanationText3">Your monthly contribution increases by the step-up percentage each year. For example, with a 10% step-up and Rs. 5,000 initial contribution:</p>
+                <ul id="explanationList1"></ul>
+    </div>
+
+            <div class="explanation-section">
+                <h3 id="explanationTitle3">Compound Growth</h3>
+                <p id="explanationText4">Your contributions grow with compound interest at the fund's return rate (12.5% annually, or ~1.04% monthly). Each month:</p>
+                <p class="explanation-formula" id="explanationFormula1"></p>
+                <p id="explanationText5">This compounds over all years until retirement, significantly increasing your final pot.</p>
+</div>
+            
+            <div class="explanation-section">
+                <h3 id="explanationTitle4">Annuity Formula for Payouts</h3>
+                <p id="explanationText6">After retirement, your pot is converted to monthly payouts using the annuity formula:</p>
+                <p class="explanation-formula" id="explanationFormula2"></p>
+                <p id="explanationText7">This ensures your pot lasts exactly for the payout period (from retirement age to life expectancy).</p>
+            </div>
+            
+            <div class="explanation-section">
+                <h3 id="explanationTitle5">Solving for Contribution (Binary Search)</h3>
+                <p id="explanationText8">When you enter a desired payout, the calculator uses binary search to find the exact monthly contribution needed:</p>
+                <ol id="explanationList2"></ol>
+            </div>
+            
+            <div class="explanation-section">
+                <h3 id="explanationTitle6">Inflation Impact</h3>
+                <p id="explanationText9">Inflation reduces purchasing power over time. The calculator shows:</p>
+                <p class="explanation-formula" id="explanationFormula3"></p>
+                <p id="explanationText10">This helps you understand what your retirement income will actually buy in today's terms.</p>
+            </div>
         </div>
     </div>
         </div>
@@ -457,7 +589,29 @@ const translations = {
     "footerViewPerformance": "View Performance",
     "howToInvest": "How to Invest",
     "pageTitle": "Pension Planner",
-    "languageSwitcherTitle": "Language"
+    "languageSwitcherTitle": "Language",
+    "explanationToggle": "📖 How Calculations Work",
+    "explanationTitle1": "Two Calculation Modes",
+    "explanationText1": "Mode 1 - Contribution-Based: Enter your monthly contribution amount. The calculator determines how much you'll receive monthly after retirement based on your savings and fund returns.",
+    "explanationText2": "Mode 2 - Payout-Based: Enter your desired monthly retirement income. The calculator determines how much you need to save monthly to achieve that goal.",
+    "explanationTitle2": "Step-Up Contributions",
+    "explanationText3": "Your monthly contribution increases by the step-up percentage each year. For example, with a 10% step-up and Rs. 5,000 initial contribution:",
+    "explanationList1": "<li>Year 1: Rs. 5,000/month</li><li>Year 2: Rs. 5,500/month (10% increase)</li><li>Year 3: Rs. 6,050/month (10% increase)</li><li>And so on...</li>",
+    "explanationTitle3": "Compound Growth",
+    "explanationText4": "Your contributions grow with compound interest at the fund's return rate (12.5% annually, or ~1.04% monthly). Each month:",
+    "explanationFormula1": "New Balance = (Previous Balance + Monthly Contribution) × (1 + Monthly Return Rate)",
+    "explanationText5": "This compounds over all years until retirement, significantly increasing your final pot.",
+    "explanationTitle4": "Annuity Formula for Payouts",
+    "explanationText6": "After retirement, your pot is converted to monthly payouts using the annuity formula:",
+    "explanationFormula2": "Monthly Payout = Pot × Monthly Return Rate / (1 - (1 + Monthly Return Rate)^(-Number of Months))",
+    "explanationText7": "This ensures your pot lasts exactly for the payout period (from retirement age to life expectancy).",
+    "explanationTitle5": "Solving for Contribution (Binary Search)",
+    "explanationText8": "When you enter a desired payout, the calculator uses binary search to find the exact monthly contribution needed:",
+    "explanationList2": "<li>Start with a range (0 to required pot amount)</li><li>Test the midpoint contribution amount</li><li>Calculate if it produces enough growth to reach the required pot</li><li>Narrow the range and repeat until the exact amount is found</li>",
+    "explanationTitle6": "Inflation Impact",
+    "explanationText9": "Inflation reduces purchasing power over time. The calculator shows:",
+    "explanationFormula3": "Real Purchasing Power = Future Amount / (1 + Inflation Rate)^Years",
+    "explanationText10": "This helps you understand what your retirement income will actually buy in today's terms."
   },
   "ur": {
     "currentAge": "موجودہ عمر",
@@ -510,7 +664,29 @@ const translations = {
     "howToInvest": "کیسے سرمایہ کاری کریں",
     "footerViewPerformance": "کارکردگی دیکھیں",
     "pageTitle": "پنشن پلانر",
-    "languageSwitcherTitle": "زبان"
+    "languageSwitcherTitle": "زبان",
+    "explanationToggle": "📖 حساب کیسے کام کرتے ہیں",
+    "explanationTitle1": "دو حساب کے طریقے",
+    "explanationText1": "طریقہ 1 - شراکت پر مبنی: اپنی ماہانہ شراکت کی رقم درج کریں۔ کیلکولیٹر آپ کی بچت اور فنڈ کی واپسی کی بنیاد پر ریٹائرمنٹ کے بعد آپ کو ماہانہ کتنا ملے گا اس کا تعین کرتا ہے۔",
+    "explanationText2": "طریقہ 2 - ادائیگی پر مبنی: اپنی مطلوبہ ماہانہ ریٹائرمنٹ آمدنی درج کریں۔ کیلکولیٹر اس مقصد کو حاصل کرنے کے لیے آپ کو ماہانہ کتنا بچانا ہوگا اس کا تعین کرتا ہے۔",
+    "explanationTitle2": "اضافہ شراکتیں",
+    "explanationText3": "آپ کی ماہانہ شراکت ہر سال اضافہ فیصد سے بڑھتی ہے۔ مثال کے طور پر، 10% اضافہ اور Rs. 5,000 ابتدائی شراکت کے ساتھ:",
+    "explanationList1": "<li>سال 1: Rs. 5,000/ماہ</li><li>سال 2: Rs. 5,500/ماہ (10% اضافہ)</li><li>سال 3: Rs. 6,050/ماہ (10% اضافہ)</li><li>اور اسی طرح...</li>",
+    "explanationTitle3": "مرکب نمو",
+    "explanationText4": "آپ کی شراکتیں فنڈ کی واپسی کی شرح (سالانہ 12.5%، یا ماہانہ ~1.04%) پر مرکب سود کے ساتھ بڑھتی ہیں۔ ہر مہینہ:",
+    "explanationFormula1": "نیا بیلنس = (پچھلا بیلنس + ماہانہ شراکت) × (1 + ماہانہ واپسی کی شرح)",
+    "explanationText5": "یہ ریٹائرمنٹ تک تمام سالوں میں مرکب ہوتا ہے، آپ کے حتمی پوٹ میں نمایاں اضافہ کرتا ہے۔",
+    "explanationTitle4": "ادائیگیوں کے لیے سالانہ فارمولا",
+    "explanationText6": "ریٹائرمنٹ کے بعد، آپ کا پوٹ سالانہ فارمولا کا استعمال کرتے ہوئے ماہانہ ادائیگیوں میں تبدیل ہوتا ہے:",
+    "explanationFormula2": "ماہانہ ادائیگی = پوٹ × ماہانہ واپسی کی شرح / (1 - (1 + ماہانہ واپسی کی شرح)^(-مہینوں کی تعداد))",
+    "explanationText7": "یہ یقینی بناتا ہے کہ آپ کا پوٹ ادائیگی کی مدت (ریٹائرمنٹ کی عمر سے زندگی کی توقع تک) کے لیے بالکل کافی ہے۔",
+    "explanationTitle5": "شراکت کا حل (بائنری سرچ)",
+    "explanationText8": "جب آپ مطلوبہ ادائیگی درج کرتے ہیں، تو کیلکولیٹر درکار ماہانہ شراکت تلاش کرنے کے لیے بائنری سرچ استعمال کرتا ہے:",
+    "explanationList2": "<li>ایک رینج (0 سے درکار پوٹ کی رقم) کے ساتھ شروع کریں</li><li>درمیانی نقطہ شراکت کی رقم کو ٹیسٹ کریں</li><li>حساب کریں کہ آیا یہ درکار پوٹ تک پہنچنے کے لیے کافی نمو پیدا کرتا ہے</li><li>رینج کو محدود کریں اور عین رقم ملنے تک دہرائیں</li>",
+    "explanationTitle6": "افراط زر کا اثر",
+    "explanationText9": "افراط زر وقت کے ساتھ خریداری کی طاقت کو کم کرتا ہے۔ کیلکولیٹر دکھاتا ہے:",
+    "explanationFormula3": "حقیقی خریداری کی طاقت = مستقبل کی رقم / (1 + افراط زر کی شرح)^سال",
+    "explanationText10": "یہ آپ کو سمجھنے میں مدد کرتا ہے کہ آپ کی ریٹائرمنٹ آمدنی آج کی شرائط میں اصل میں کیا خریدے گی۔"
   },
   "ps": {
     "currentAge": "اوسنی عمر",
@@ -563,7 +739,29 @@ const translations = {
     "howToInvest": "څنګه پانګه اچونه وکړئ",
     "footerViewPerformance": "کارکردګۍ وګورئ",
     "pageTitle": "د تقاعد پلان جوړونکی",
-    "languageSwitcherTitle": "ژبه"
+    "languageSwitcherTitle": "ژبه",
+    "explanationToggle": "📖 محاسبه څنګه کار کوي",
+    "explanationTitle1": "دوه محاسبه لارې",
+    "explanationText1": "لاره 1 - د ونډې پر بنسټ: خپل میاشتنی ونډه اندازه ولیکئ. محاسبه کوونکی د خپلې سپما او د فند بیرته راګرځېدو پر بنسټ د تقاعد وروسته تاسو به میاشتنی څومره ترلاسه کوئ ټاکي.",
+    "explanationText2": "لاره 2 - د تادیاتو پر بنسټ: خپل غوښتل شوی میاشتنی د تقاعد عاید ولیکئ. محاسبه کوونکی د دې موخې ترلاسه کولو لپاره تاسو اړتیا لرئ میاشتنی څومره خوندي کړئ ټاکي.",
+    "explanationTitle2": "د زیاتوالي ونډې",
+    "explanationText3": "ستاسو میاشتنی ونډه هر کال د زیاتوالي سلنې سره زیاتوالی مومي. د مثال په توګه، د 10% زیاتوالي او Rs. 5,000 لومړنی ونډه سره:",
+    "explanationList1": "<li>کال 1: Rs. 5,000/میاشت</li><li>کال 2: Rs. 5,500/میاشت (10% زیاتوالی)</li><li>کال 3: Rs. 6,050/میاشت (10% زیاتوالی)</li><li>او همداسې...</li>",
+    "explanationTitle3": "مرکب زیاتوالی",
+    "explanationText4": "ستاسو ونډې د فند بیرته راګرځېدو سره مرکب سود سره وده کوي (کلنی 12.5%، یا میاشتنی ~1.04%). هر میاشت:",
+    "explanationFormula1": "نوی بیلانس = (پخوانی بیلانس + میاشتنی ونډه) × (1 + میاشتنی بیرته راګرځېدل)",
+    "explanationText5": "دا د تقاعد تر ټولو کلونو پورې مرکب کېږي، ستاسو د وروستي پوټ په پام وړ زیاتوالی کوي.",
+    "explanationTitle4": "د تادیاتو لپاره د کلنی فورمول",
+    "explanationText6": "د تقاعد وروسته، ستاسو پوټ د کلنی فورمول کارولو سره میاشتنی تادیاتو ته بدلېږي:",
+    "explanationFormula2": "میاشتنی تادیات = پوټ × میاشتنی بیرته راګرځېدل / (1 - (1 + میاشتنی بیرته راګرځېدل)^(-د میاشتو شمیر))",
+    "explanationText7": "دا ډاډه کوي چې ستاسو پوټ د تادیاتو د مودې لپاره (د تقاعد عمر څخه د ژوند تمنا ته) دقیقاً دوام لري.",
+    "explanationTitle5": "د ونډې حل (دوه اړخیزه لټون)",
+    "explanationText8": "کله چې تاسو غوښتل شوی تادیات ولیکئ، محاسبه کوونکی د اړین میاشتنی ونډه موندلو لپاره دوه اړخیزه لټون کاروي:",
+    "explanationList2": "<li>د یوې ساحې سره پیل وکړئ (0 څخه اړین پوټ اندازه)</li><li>د منځنۍ نقطې ونډه اندازه ازمایږئ</li><li>محاسبه وکړئ چې ایا دا د اړین پوټ ته رسیدو لپاره کافي زیاتوالی تولیدوي</li><li>ساحه تنګه کړئ او د دقیقې اندازې تر موندلو پورې تکرار کړئ</li>",
+    "explanationTitle6": "د تورم اغیزه",
+    "explanationText9": "تورم د وخت سره د پیرودلو وړتیا کمه کوي. محاسبه کوونکی ښیي:",
+    "explanationFormula3": "ریښتینی پیرودلو وړتیا = راتلونکی اندازه / (1 + د تورم کچه)^کلونه",
+    "explanationText10": "دا تاسو سره مرسته کوي چې پوه شئ چې ستاسو د تقاعد عاید په نن ورځ کې واقعیا څه پیرودي."
   },
   "hnd": {
     "currentAge": "حالیہ عمر",
@@ -616,7 +814,29 @@ const translations = {
     "howToInvest": "کیویں سرمایہ کاری کرو",
     "visitWebsite": "ویب سائٹ ڈیکھو",
     "pageTitle": "پنشن پلانر",
-    "languageSwitcherTitle": "زبان"
+    "languageSwitcherTitle": "زبان",
+    "explanationToggle": "📖 حساب کیویں کم کریندے نیں",
+    "explanationTitle1": "دو حساب دے طریقے",
+    "explanationText1": "طریقہ 1 - شراکت تے مبنی: اپنی ماہانہ شراکت دی رقم درج کرو۔ کیلکولیٹر تواڈی بچت تے فنڈ دی واپسی دی بنیاد تے ریٹائرمنٹ دے بعد تسیں ماہانہ کتنا گھنو گے ایہ طے کریندا اے۔",
+    "explanationText2": "طریقہ 2 - ادائیگی تے مبنی: اپنی مطلوبہ ماہانہ ریٹائرمنٹ آمدنی درج کرو۔ کیلکولیٹر اس مقصد نوں حاصل کرن دے لئی تسیں نوں ماہانہ کتنا بچانا ہووے گا ایہ طے کریندا اے۔",
+    "explanationTitle2": "اضافہ شراکتاں",
+    "explanationText3": "تواڈی ماہانہ شراکت ہر سال اضافہ فیصد توں ودھدی اے۔ مثال دے طور تے، 10% اضافہ تے Rs. 5,000 ابتدائی شراکت دے نال:",
+    "explanationList1": "<li>سال 1: Rs. 5,000/ماہ</li><li>سال 2: Rs. 5,500/ماہ (10% اضافہ)</li><li>سال 3: Rs. 6,050/ماہ (10% اضافہ)</li><li>تے اسی طرح...</li>",
+    "explanationTitle3": "مرکب نمو",
+    "explanationText4": "تواڈیاں شراکتاں فنڈ دی واپسی دی شرح (سالانہ 12.5%، یا ماہانہ ~1.04%) تے مرکب سود دے نال ودھدیاں نیں۔ ہر مہینہ:",
+    "explanationFormula1": "نواں بیلنس = (پچھلا بیلنس + ماہانہ شراکت) × (1 + ماہانہ واپسی دی شرح)",
+    "explanationText5": "ایہ ریٹائرمنٹ تک تمام سالاں وچ مرکب ہوندا اے، تواڈے حتمی پوٹ وچ نمایاں اضافہ کریندا اے۔",
+    "explanationTitle4": "ادائیگیاں دے لئی سالانہ فارمولا",
+    "explanationText6": "ریٹائرمنٹ دے بعد، تواڈا پوٹ سالانہ فارمولا استعمال کریندے ہوئے ماہانہ ادائیگیاں وچ تبدیل ہوندا اے:",
+    "explanationFormula2": "ماہانہ ادائیگی = پوٹ × ماہانہ واپسی دی شرح / (1 - (1 + ماہانہ واپسی دی شرح)^(-مہیناں دی تعداد))",
+    "explanationText7": "ایہ یقینی بناوندا اے کہ تواڈا پوٹ ادائیگی دی مدت (ریٹائرمنٹ دی عمر توں زندگی دی توقع تک) دے لئی بالکل کافی اے۔",
+    "explanationTitle5": "شراکت دا حل (بائنری سرچ)",
+    "explanationText8": "جب تسیں مطلوبہ ادائیگی درج کرو، تاں کیلکولیٹر درکار ماہانہ شراکت تلاش کرن دے لئی بائنری سرچ استعمال کریندا اے:",
+    "explanationList2": "<li>اک رینج (0 توں درکار پوٹ دی رقم) دے نال شروع کرو</li><li>درمیانی نقطہ شراکت دی رقم نوں ٹیسٹ کرو</li><li>حساب کرو کہ آیا ایہ درکار پوٹ تک پہنچن دے لئی کافی نمو پیدا کریندا اے</li><li>رینج نوں محدود کرو تے عین رقم ملن تک دہراؤ</li>",
+    "explanationTitle6": "افراط زر دا اثر",
+    "explanationText9": "افراط زر وقت دے نال خریداری دی طاقت نوں گھٹ کریندا اے۔ کیلکولیٹر ڈکھاوندا اے:",
+    "explanationFormula3": "حقیقی خریداری دی طاقت = مستقبل دی رقم / (1 + افراط زر دی شرح)^سال",
+    "explanationText10": "ایہ تواڈی مدد کریندا اے کہ تواڈی ریٹائرمنٹ آمدنی اج دی شرائط وچ اصل وچ کیا خریدے گی۔"
   }
 };
 
@@ -756,6 +976,16 @@ function formatMoneyInput(input) {
 function toggleLanguageDropdown() {
     const dropdown = document.getElementById('languageDropdown');
     dropdown.classList.toggle('show');
+}
+
+// Function to toggle explanation section
+function toggleExplanation() {
+    const content = document.getElementById('explanationContent');
+    const toggle = document.getElementById('explanationToggle');
+    const isVisible = content.style.display !== 'none';
+    
+    content.style.display = isVisible ? 'none' : 'block';
+    toggle.classList.toggle('active');
 }
 
 // Function to switch language
@@ -1325,6 +1555,51 @@ function initializeTranslations() {
     const howToInvestLink = document.getElementById('howToInvestLink');
     if (howToInvestLink) {
         howToInvestLink.innerText = t('howToInvest');
+    }
+    
+    // Explanation section
+    const explanationMap = {
+        'explanationToggleText': 'explanationToggle',
+        'explanationTitle1': 'explanationTitle1',
+        'explanationText1': 'explanationText1',
+        'explanationText2': 'explanationText2',
+        'explanationTitle2': 'explanationTitle2',
+        'explanationText3': 'explanationText3',
+        'explanationTitle3': 'explanationTitle3',
+        'explanationText4': 'explanationText4',
+        'explanationTitle4': 'explanationTitle4',
+        'explanationText6': 'explanationText6',
+        'explanationText7': 'explanationText7',
+        'explanationTitle5': 'explanationTitle5',
+        'explanationText8': 'explanationText8',
+        'explanationTitle6': 'explanationTitle6',
+        'explanationText9': 'explanationText9',
+        'explanationText10': 'explanationText10'
+    };
+    
+    for (const [id, key] of Object.entries(explanationMap)) {
+        const el = document.getElementById(id);
+        if (el) {
+            if (id === 'explanationList1' || id === 'explanationList2') {
+                el.innerHTML = t(key);
+            } else {
+                el.innerText = t(key);
+            }
+        }
+    }
+    
+    // Formula elements (use innerHTML to preserve formatting)
+    const formulaMap = {
+        'explanationFormula1': 'explanationFormula1',
+        'explanationFormula2': 'explanationFormula2',
+        'explanationFormula3': 'explanationFormula3'
+    };
+    
+    for (const [id, key] of Object.entries(formulaMap)) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.innerHTML = '<strong>' + t(key) + '</strong>';
+        }
     }
 }
 
