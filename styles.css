@@ -1,0 +1,414 @@
+/* ============================================
+   SHARED STYLES FOR PENSION PLANNER
+   ============================================ */
+
+:root { 
+    --meezan-green: #007565; 
+    --bg: #f0f4f3; 
+    --text: #333; 
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 10px;
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* ============================================
+   LANGUAGE-SPECIFIC FONTS
+   ============================================ */
+
+body.lang-en { 
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; 
+    direction: ltr; 
+}
+
+body.lang-ur, body.lang-hnd { 
+    font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
+    font-display: swap;
+    direction: rtl;
+}
+
+body.lang-ps { 
+    font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
+    font-display: swap;
+    direction: rtl;
+}
+
+/* Ensure proper font rendering for Urdu/Hindko (Nastaliq) */
+body.lang-ur *, body.lang-hnd * { 
+    font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
+    font-display: swap;
+}
+
+/* Ensure proper font rendering for Pashto (Naskh) */
+body.lang-ps * { 
+    font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
+    font-display: swap;
+}
+
+/* Keep icons, buttons, and input numbers with system fonts */
+body.lang-ur button, body.lang-hnd button, body.lang-ps button,
+body.lang-ur svg, body.lang-hnd svg, body.lang-ps svg,
+body.lang-ur input[type="number"], body.lang-hnd input[type="number"], body.lang-ps input[type="number"],
+body.lang-ur .language-icon-btn, body.lang-hnd .language-icon-btn, body.lang-ps .language-icon-btn,
+body.lang-ur .slider-value, body.lang-hnd .slider-value, body.lang-ps .slider-value {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ============================================
+   RTL SUPPORT
+   ============================================ */
+
+body[dir="rtl"] { 
+    text-align: right; 
+}
+
+body[dir="rtl"] label { 
+    text-align: right; 
+}
+
+body[dir="rtl"] input { 
+    text-align: right; 
+    direction: rtl; 
+}
+
+body[dir="rtl"] input[type="number"] { 
+    direction: ltr; 
+    text-align: right; 
+}
+
+body[dir="rtl"] .footer { 
+    text-align: center; 
+}
+
+body[dir="rtl"] .language-dropdown { 
+    right: auto; 
+    left: 0; 
+}
+
+body[dir="rtl"] .language-option { 
+    text-align: right; 
+}
+
+/* ============================================
+   LANGUAGE SWITCHER
+   ============================================ */
+
+.language-switcher { 
+    position: fixed; 
+    right: 20px; 
+    bottom: 20px; 
+    z-index: 1000; 
+}
+
+.language-icon-btn { 
+    width: 56px; 
+    height: 56px; 
+    background: white; 
+    border: 2px solid #ddd; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    transition: all 0.3s; 
+}
+
+.language-icon-btn:hover { 
+    border-color: var(--meezan-green); 
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2); 
+    transform: scale(1.1); 
+}
+
+.language-icon-btn svg { 
+    width: 28px; 
+    height: 28px; 
+    fill: var(--meezan-green); 
+}
+
+.language-dropdown { 
+    position: absolute; 
+    bottom: 70px; 
+    right: 0; 
+    background: white; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    min-width: 160px; 
+    display: none; 
+    overflow: hidden; 
+}
+
+.language-dropdown.show { 
+    display: block; 
+}
+
+.language-option { 
+    display: block; 
+    padding: 12px 20px; 
+    background: white; 
+    border: none; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+    text-align: left; 
+    font-size: 0.9rem; 
+    color: #333; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+.language-option:hover { 
+    background: #f5f5f5; 
+}
+
+.language-option.active { 
+    background: var(--meezan-green); 
+    color: white; 
+    font-weight: 600; 
+}
+
+.language-option:last-child { 
+    border-bottom: none; 
+}
+
+/* ============================================
+   COMMON CONTAINERS
+   ============================================ */
+
+.card { 
+    background: white; 
+    padding: 1.5rem; 
+    border-radius: 20px; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+    width: 100%; 
+    max-width: 1200px; 
+    box-sizing: border-box; 
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1 { 
+    color: var(--meezan-green); 
+    text-align: center; 
+    margin-bottom: 1rem; 
+    font-size: 1.4rem; 
+    border-bottom: 2px solid #eee; 
+    padding-bottom: 8px; 
+}
+
+h2 { 
+    color: #2c3e50; 
+    font-size: 18px; 
+    margin-top: 20px; 
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+button { 
+    width: 100%; 
+    padding: 15px; 
+    background: var(--meezan-green); 
+    color: white; 
+    border: none; 
+    border-radius: 8px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    margin-top: 20px; 
+    font-size: 1.1rem; 
+    transition: background 0.3s; 
+}
+
+button:hover { 
+    background: #005a4d; 
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--meezan-green);
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.btn:hover { 
+    background: #004d29; 
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer { 
+    font-size: 0.7rem; 
+    text-align: center; 
+    color: #999; 
+    margin-top: 20px; 
+    padding-top: 15px; 
+    line-height: 1.8; 
+}
+
+.footer a { 
+    color: #999; 
+    text-decoration: none; 
+    border-bottom: 1px dotted #999; 
+    transition: color 0.2s; 
+}
+
+.footer a:hover { 
+    color: var(--meezan-green); 
+    border-bottom-color: var(--meezan-green); 
+}
+
+.data-source { 
+    font-size: 0.65rem; 
+    color: #aaa; 
+    margin-top: 8px; 
+    line-height: 1.6; 
+}
+
+.footer-separator { 
+    margin: 0 8px; 
+    color: #ddd; 
+}
+
+.buymeacoffee-btn { 
+    display: inline-block; 
+    transition: transform 0.2s, opacity 0.2s; 
+}
+
+.buymeacoffee-btn:hover { 
+    transform: scale(1.05); 
+    opacity: 0.9; 
+}
+
+.buymeacoffee-btn img { 
+    border: none; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+    border-radius: 5px; 
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    body { 
+        padding: 5px; 
+    }
+    
+    .card { 
+        padding: 1rem; 
+        border-radius: 15px; 
+        margin: 0; 
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    h1 { 
+        font-size: 1.2rem; 
+        margin-bottom: 0.8rem; 
+        padding-bottom: 6px; 
+    }
+    
+    h2 { 
+        font-size: 16px; 
+    }
+    
+    .footer { 
+        font-size: 0.65rem; 
+        padding-top: 12px; 
+        margin-top: 15px; 
+    }
+    
+    .data-source { 
+        font-size: 0.6rem; 
+        line-height: 1.5; 
+    }
+    
+    .buymeacoffee-btn img { 
+        height: 45px; 
+        width: 180px; 
+    }
+    
+    .language-switcher { 
+        right: 10px; 
+        bottom: 10px; 
+    }
+    
+    .language-icon-btn { 
+        width: 50px; 
+        height: 50px; 
+    }
+    
+    .language-icon-btn svg { 
+        width: 24px; 
+        height: 24px; 
+    }
+}
+
+/* Small mobile devices (iPhone SE, small Android) */
+@media (max-width: 375px) {
+    body { 
+        padding: 3px; 
+    }
+    
+    .card { 
+        padding: 0.8rem; 
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    h1 { 
+        font-size: 1.1rem; 
+    }
+    
+    .footer { 
+        font-size: 0.6rem; 
+    }
+}
+
+@media (max-width: 1200px) {
+    .language-switcher { 
+        position: fixed; 
+        right: 15px; 
+        bottom: 15px; 
+    }
+    
+    .language-dropdown { 
+        bottom: 70px; 
+        right: 0; 
+    }
+}
+

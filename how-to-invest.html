@@ -6,104 +6,61 @@
     <title id="pageTitle">Auto-Invest Guide | Al Meezan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="styles.css">
     <style>
         :root { --meezan-green: #006837; }
         
+        /* Page-specific styles for how-to-invest.html */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
             background-color: #f4f7f6;
-            margin: 0;
             padding: 20px;
         }
         
-        body.lang-en { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; direction: ltr; }
-        body.lang-ur, body.lang-hnd { 
-            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
-            font-display: swap;
-            direction: rtl;
-        }
-        body.lang-ps { 
-            font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
-            font-display: swap;
-            direction: rtl;
+        body[dir="rtl"] .step-box { 
+            border-left: none; 
+            border-right: 4px solid var(--meezan-green); 
+            border-radius: 8px 0 0 8px; 
         }
         
-        body[dir="rtl"] { text-align: right; }
-        body[dir="rtl"] .step-box { border-left: none; border-right: 4px solid #006837; border-radius: 8px 0 0 8px; }
-        body[dir="rtl"] .step-number { margin-right: 0; margin-left: 5px; }
-        
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        body[dir="rtl"] .step-number { 
+            margin-right: 0; 
+            margin-left: 5px; 
         }
+        
         .header {
             text-align: center;
-            border-bottom: 2px solid #006837;
+            border-bottom: 2px solid var(--meezan-green);
             padding-bottom: 10px;
             margin-bottom: 25px;
         }
-        h1 { color: #006837; margin: 0; font-size: 24px; }
-        h2 { color: #2c3e50; font-size: 18px; margin-top: 20px; }
+        
+        h1 { 
+            color: var(--meezan-green); 
+            margin: 0; 
+            font-size: 24px; 
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
         .step-box {
             background: #f9f9f9;
-            border-left: 4px solid #006837;
+            border-left: 4px solid var(--meezan-green);
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 0 8px 8px 0;
         }
+        
         .step-number {
             font-weight: bold;
-            color: #006837;
+            color: var(--meezan-green);
             margin-right: 5px;
         }
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #777;
-            margin-top: 30px;
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: #006837;
-            color: white;
-            padding: 12px;
-            text-decoration: none;
-            border-radius: 6px;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-        .btn:hover { background: #004d29; }
-        
-        /* Language switcher */
-        .language-switcher { position: fixed; right: 20px; bottom: 20px; z-index: 1000; }
-        .language-icon-btn { width: 56px; height: 56px; background: white; border: 2px solid #ddd; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: all 0.3s; }
-        .language-icon-btn:hover { border-color: var(--meezan-green); box-shadow: 0 6px 16px rgba(0,0,0,0.2); transform: scale(1.1); }
-        .language-icon-btn svg { width: 28px; height: 28px; fill: var(--meezan-green); }
-        .language-dropdown { position: absolute; bottom: 70px; right: 0; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 160px; display: none; overflow: hidden; }
-        .language-dropdown.show { display: block; }
-        .language-option { display: block; padding: 12px 20px; background: white; border: none; cursor: pointer; transition: all 0.2s; text-align: left; font-size: 0.9rem; color: #333; border-bottom: 1px solid #f0f0f0; }
-        .language-option:hover { background: #f5f5f5; }
-        .language-option.active { background: var(--meezan-green); color: white; font-weight: 600; }
-        .language-option:last-child { border-bottom: none; }
-        
-        body[dir="rtl"] .language-switcher { right: auto; left: 20px; }
-        body[dir="rtl"] .language-dropdown { right: auto; left: 0; }
-        body[dir="rtl"] .language-option { text-align: right; }
         
         @media (max-width: 768px) {
-            .container { padding: 20px; }
+            body { padding: 10px; }
             h1 { font-size: 20px; }
-            h2 { font-size: 16px; }
-            .language-switcher { right: 10px; bottom: 10px; }
-            .language-icon-btn { width: 50px; height: 50px; }
         }
     </style>
 </head>

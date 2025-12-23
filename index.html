@@ -7,44 +7,13 @@
     <!-- Fonts for different languages - Load only when needed -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="styles.css">
     <style>
         :root { --meezan-green: #007565; --bg: #f0f4f3; --text: #333; }
         
-        /* Language-specific fonts with font-display: swap for faster loading */
-        body { background: var(--bg); display: flex; justify-content: center; padding: 10px; color: var(--text); margin: 0; overflow-x: hidden; min-height: 100vh; }
-        body.lang-en { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; direction: ltr; }
-        body.lang-ur, body.lang-hnd { 
-            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
-            font-display: swap;
-            direction: rtl;
-        }
-        body.lang-ps { 
-            font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
-            font-display: swap;
-            direction: rtl;
-        }
-        
-        /* Ensure proper font rendering for Urdu/Hindko (Nastaliq) */
-        body.lang-ur *, body.lang-hnd * { 
-            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Web Naskh', 'Arial Unicode MS', serif; 
-            font-display: swap;
-        }
-        
-        /* Ensure proper font rendering for Pashto (Naskh) */
-        body.lang-ps * { 
-            font-family: 'Noto Naskh Arabic', 'Arial', 'Tahoma', sans-serif; 
-            font-display: swap;
-        }
-        
-        /* Keep icons, buttons, and input numbers with system fonts */
-        body.lang-ur button, body.lang-hnd button, body.lang-ps button,
-        body.lang-ur svg, body.lang-hnd svg, body.lang-ps svg,
-        body.lang-ur input[type="number"], body.lang-hnd input[type="number"], body.lang-ps input[type="number"],
-        body.lang-ur .language-icon-btn, body.lang-hnd .language-icon-btn, body.lang-ps .language-icon-btn,
-        body.lang-ur .slider-value, body.lang-hnd .slider-value, body.lang-ps .slider-value {
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .card { background: white; padding: 1.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 1200px; box-sizing: border-box; }
+        /* Page-specific styles for index.html */
+        body { background: var(--bg); display: flex; justify-content: center; }
         .main-container { display: grid; grid-template-columns: 2.5fr auto 1fr; gap: 20px; position: relative; align-items: start; }
         .input-section { display: flex; flex-direction: column; }
         .results-section { display: flex; flex-direction: column; align-self: start; margin-top: 20px; }
@@ -110,11 +79,8 @@
             .results-section { margin-top: 0 !important; }
         }
         
-        /* Mobile-specific styles for iPhone and Android */
+        /* Page-specific mobile styles */
         @media (max-width: 768px) {
-            body { padding: 5px; }
-            .card { padding: 1rem; border-radius: 15px; margin: 0; }
-            h1 { font-size: 1.2rem; margin-bottom: 0.8rem; padding-bottom: 6px; }
             .input-row { grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px; }
             .input-full { margin-bottom: 15px; }
             label { font-size: 0.9rem; margin-bottom: 6px; }
@@ -130,35 +96,20 @@
             .stat-value { font-size: 1.1rem; }
             .stat-label { font-size: 0.8rem; }
             .stat-number { font-size: 0.9rem; }
-            .footer { font-size: 0.65rem; padding-top: 12px; margin-top: 15px; }
-            .data-source { font-size: 0.6rem; line-height: 1.5; }
-            .buymeacoffee-btn img { height: 45px; width: 180px; }
-            .language-switcher { right: 10px; bottom: 10px; }
-            .language-icon-btn { width: 50px; height: 50px; }
-            .language-icon-btn svg { width: 24px; height: 24px; }
             .tooltip { width: 90vw; max-width: 300px; font-size: 0.75rem; padding: 10px; }
         }
         
-        /* Small mobile devices (iPhone SE, small Android) */
         @media (max-width: 375px) {
-            body { padding: 3px; }
-            .card { padding: 0.8rem; }
-            h1 { font-size: 1.1rem; }
             .input-row { gap: 12px; margin-bottom: 12px; }
             input { padding: 12px; }
             .shareable-card { padding: 10px !important; }
             .stat-box { padding: 10px; }
-            .footer { font-size: 0.6rem; }
         }
         
-        /* Landscape mobile orientation */
         @media (max-width: 968px) and (orientation: landscape) {
-            .card { padding: 1rem; }
-            h1 { font-size: 1.1rem; margin-bottom: 0.5rem; }
             .input-row { grid-template-columns: 1fr 1fr; gap: 10px; }
             .results-section { margin-top: 0 !important; }
         }
-        h1 { color: var(--meezan-green); text-align: center; margin-bottom: 1rem; font-size: 1.4rem; border-bottom: 2px solid #eee; padding-bottom: 8px; }
         .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; }
         .mode-btn { flex: 1; padding: 12px; border: 2px solid var(--meezan-green); background: white; color: var(--meezan-green); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
         .mode-btn.active { background: var(--meezan-green); color: white; }
@@ -210,28 +161,6 @@
         .stat-label { font-size: 0.85rem; color: #666; }
         .stat-number { font-size: 1rem; font-weight: 600; color: var(--meezan-green); }
         .inflation-warning { color: #d35400; font-size: 0.75rem; padding: 8px 12px; background: #fff3e0; border-radius: 6px; margin-top: 10px; line-height: 1.4; border-left: 3px solid #d35400; }
-        .footer { font-size: 0.7rem; text-align: center; color: #999; margin-top: 20px; padding-top: 15px; line-height: 1.8; }
-        .footer a { color: #999; text-decoration: none; border-bottom: 1px dotted #999; transition: color 0.2s; }
-        .footer a:hover { color: var(--meezan-green); border-bottom-color: var(--meezan-green); }
-        .data-source { font-size: 0.65rem; color: #aaa; margin-top: 8px; line-height: 1.6; }
-        .footer-separator { margin: 0 8px; color: #ddd; }
-        .buymeacoffee-btn { display: inline-block; transition: transform 0.2s, opacity 0.2s; }
-        .buymeacoffee-btn:hover { transform: scale(1.05); opacity: 0.9; }
-        .buymeacoffee-btn img { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 5px; }
-        .language-switcher { position: fixed; right: 20px; bottom: 20px; z-index: 1000; }
-        .language-icon-btn { width: 56px; height: 56px; background: white; border: 2px solid #ddd; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: all 0.3s; }
-        .language-icon-btn:hover { border-color: var(--meezan-green); box-shadow: 0 6px 16px rgba(0,0,0,0.2); transform: scale(1.1); }
-        .language-icon-btn svg { width: 28px; height: 28px; fill: var(--meezan-green); }
-        .language-dropdown { position: absolute; bottom: 70px; right: 0; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 160px; display: none; overflow: hidden; }
-        .language-dropdown.show { display: block; }
-        .language-option { display: block; padding: 12px 20px; background: white; border: none; cursor: pointer; transition: all 0.2s; text-align: left; font-size: 0.9rem; color: #333; border-bottom: 1px solid #f0f0f0; }
-        .language-option:hover { background: #f5f5f5; }
-        .language-option.active { background: var(--meezan-green); color: white; font-weight: 600; }
-        .language-option:last-child { border-bottom: none; }
-        @media (max-width: 1200px) {
-            .language-switcher { position: fixed; right: 15px; bottom: 15px; }
-            .language-dropdown { bottom: 70px; right: 0; }
-        }
     </style>
 </head>
 <body>
